@@ -176,6 +176,28 @@
   border-radius: 10px;
 }
 
+#main-wr {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Side */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  color: white;
+  width: 80px;
+}
+
+/* .sidebar-menu {
+  color: white;
+} */
+
 /* footer */
 
 #player-footer {
@@ -211,7 +233,7 @@
   width: 45px;
   height: 41px;
   border-radius: 10px;
-  background: url(./img/albums/coldplay_Parachutes.jpg) center/cover;
+  /* background: url(./img/albums/coldplay_Parachutes.jpg) center/cover; */
 }
 
 /* hover */
