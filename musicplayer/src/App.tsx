@@ -119,11 +119,13 @@ function MusicList({
   setGenreType,
   searchInput,
   setplayBarActivate,
+  setplayBarMusicInfor,
 }: {
   searchInput: string;
   setGenreType: string;
   sortType: SortType;
   setplayBarActivate: Function;
+  setplayBarMusicInfor: Function;
 }) {
   const [musicList, setMusicList] = useState<Music[]>([]);
 
@@ -159,7 +161,12 @@ function MusicList({
           }
         })
         .map((e, idx) => (
-          <Music key={idx} music={e} setplayBarActivate={setplayBarActivate} />
+          <Music
+            key={idx}
+            music={e}
+            setplayBarActivate={setplayBarActivate}
+            setplayBarMusicInfor={setplayBarMusicInfor}
+          />
         ))}
     </main>
   );
@@ -168,9 +175,11 @@ function MusicList({
 function Music({
   music,
   setplayBarActivate,
+  setplayBarMusicInfor,
 }: {
   music: Music;
   setplayBarActivate: Function;
+  setplayBarMusicInfor: Function;
 }) {
   const [subOperationActivate, setSubOperationActivate] = useState<boolean>(
     false
@@ -200,6 +209,7 @@ function Music({
             music={music}
             subOperationActivate={subOperationActivate}
             setplayBarActivate={setplayBarActivate}
+            setplayBarMusicInfor={setplayBarMusicInfor}
           />
         </i>
       </div>
@@ -214,10 +224,12 @@ function MusicSubOperation({
   music,
   subOperationActivate,
   setplayBarActivate,
+  setplayBarMusicInfor,
 }: {
   music: Music;
   subOperationActivate: boolean;
   setplayBarActivate: Function;
+  setplayBarMusicInfor: Function;
 }) {
   const [playBarToggle, setPlayBarToggle] = useState<boolean>(false);
 
@@ -232,6 +244,7 @@ function MusicSubOperation({
           if (!playBarToggle) {
             setplayBarActivate(!playBarToggle);
             setPlayBarToggle(!playBarToggle);
+            setplayBarMusicInfor(music);
           }
         }}
       >
@@ -243,7 +256,14 @@ function MusicSubOperation({
   );
 }
 
-function Footer({ playBarActivate }: { playBarActivate: boolean }) {
+function Footer({
+  playBarActivate,
+  playBarMusicInfor,
+}: {
+  playBarActivate: boolean;
+  playBarMusicInfor: Music;
+}) {
+  const [playNpauseToggle, setPlayNpauseToggle] = useState<boolean>(false);
   return (
     <footer
       style={playBarActivate ? { display: "flex" } : { display: "none" }}
@@ -251,19 +271,33 @@ function Footer({ playBarActivate }: { playBarActivate: boolean }) {
     >
       <div className="playingNow">
         <div className="music-album-img"></div>
-        <div className="music-title">yellow</div>
-        <div className="music-artist">coldplay</div>
-        <div className="music-album">Parachtes</div>
-        <div className="music-playTime">4:27</div>
-        <div className="music-likes">128</div>
-        <div className="music-views">11</div>
+        <div className="music-title">{playBarMusicInfor.title}</div>
+        <div className="music-artist">{playBarMusicInfor.artist}</div>
+        <div className="music-album">{playBarMusicInfor.album}</div>
+        <div className="music-playTime">{playBarMusicInfor.time}</div>
+        <div className="music-likes">{playBarMusicInfor.likes}</div>
+        <div className="music-views">{playBarMusicInfor.views}</div>
         <i className="fas fa-thumbs-up"></i>
       </div>
       <div className="player-operation">
         {/* <i className="fas fa-step-backward"></i> */}
-        <i className="fas fa-play"></i>
+        <i
+          style={playNpauseToggle ? { display: "block" } : { display: "none" }}
+          className="fas fa-play"
+          onClick={() => {
+            setPlayNpauseToggle(!playNpauseToggle);
+          }}
+        ></i>
+        <i
+          style={!playNpauseToggle ? { display: "block" } : { display: "none" }}
+          className="fas fa-pause"
+          onClick={() => {
+            setPlayNpauseToggle(!playNpauseToggle);
+          }}
+        ></i>
         {/* <i className="fas fa-step-forward"></i> */}
         <i className="fas fa-volume-down"></i>
+
         {/* <i className="fas fa-ellipsis-v"></i> */}
       </div>
     </footer>
@@ -388,9 +422,13 @@ function MusicPlayer() {
           setGenreType={genreType}
           searchInput={searchInput}
           setplayBarActivate={setplayBarActivate}
+          setplayBarMusicInfor={setplayBarMusicInfor}
         />
       </div>
-      <Footer playBarActivate={playBarActivate} />
+      <Footer
+        playBarActivate={playBarActivate}
+        playBarMusicInfor={playBarMusicInfor}
+      />
     </div>
   );
 }
