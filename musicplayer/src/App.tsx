@@ -118,10 +118,12 @@ function MusicList({
   sortType,
   setGenreType,
   searchInput,
+  setplayBarActivate,
 }: {
   searchInput: string;
   setGenreType: string;
   sortType: SortType;
+  setplayBarActivate: Function;
 }) {
   const [musicList, setMusicList] = useState<Music[]>([]);
 
@@ -157,13 +159,19 @@ function MusicList({
           }
         })
         .map((e, idx) => (
-          <Music key={idx} music={e} />
+          <Music key={idx} music={e} setplayBarActivate={setplayBarActivate} />
         ))}
     </main>
   );
 }
 
-function Music({ music }: { music: Music }) {
+function Music({
+  music,
+  setplayBarActivate,
+}: {
+  music: Music;
+  setplayBarActivate: Function;
+}) {
   const [subOperationActivate, setSubOperationActivate] = useState<boolean>(
     false
   );
@@ -191,6 +199,7 @@ function Music({ music }: { music: Music }) {
           <MusicSubOperation
             music={music}
             subOperationActivate={subOperationActivate}
+            setplayBarActivate={setplayBarActivate}
           />
         </i>
       </div>
@@ -204,25 +213,42 @@ function Music({ music }: { music: Music }) {
 function MusicSubOperation({
   music,
   subOperationActivate,
+  setplayBarActivate,
 }: {
   music: Music;
   subOperationActivate: boolean;
+  setplayBarActivate: Function;
 }) {
+  const [playBarToggle, setPlayBarToggle] = useState<boolean>(false);
+
   return (
     <div
       style={subOperationActivate ? { display: "flex" } : { display: "none" }}
       className="music-sub-operation"
     >
-      <div>재생</div>
-      <div>재생목록에 담기</div>
-      <div>재생목록에서 삭제</div>
+      <div
+        className="sub-operation-menus"
+        onClick={() => {
+          if (!playBarToggle) {
+            setplayBarActivate(!playBarToggle);
+            setPlayBarToggle(!playBarToggle);
+          }
+        }}
+      >
+        재생
+      </div>
+      <div className="sub-operation-menus">재생목록에 담기</div>
+      <div className="sub-operation-menus">재생목록에서 삭제</div>
     </div>
   );
 }
 
-function Footer() {
+function Footer({ playBarActivate }: { playBarActivate: boolean }) {
   return (
-    <footer id="player-footer">
+    <footer
+      style={playBarActivate ? { display: "flex" } : { display: "none" }}
+      id="player-footer"
+    >
       <div className="playingNow">
         <div className="music-album-img"></div>
         <div className="music-title">yellow</div>
@@ -315,21 +341,29 @@ function RankSideBar({
 }
 
 function MusicPlayer() {
-  // const [res, setRes] = useState<Res>({
-  //   input:"",
-  //   sortType:SortType.ALBUMS
-  // });
   const [searchInput, setSearchInput] = useState("");
-
   const [sortType, setSortType] = useState<SortType>(SortType.LIKES);
   const [genreType, setGenreType] = useState<string>("");
 
   // const [librarySideBarActivate, setLibrarySideBarActivate] = useState<boolean>(
   //   false
   // );
+
   const [rankSideBarActivate, setRankSideBarActivate] = useState<boolean>(
     false
   );
+
+  const [playBarActivate, setplayBarActivate] = useState<boolean>(false);
+  const [playBarMusicInfor, setplayBarMusicInfor] = useState<Music>({
+    title: "",
+    artist: "",
+    album: "",
+    time: "",
+    likes: 0,
+    views: 0,
+    library: "",
+    genre: "",
+  });
 
   return (
     <div id="musicPlayer">
@@ -353,9 +387,10 @@ function MusicPlayer() {
           sortType={sortType}
           setGenreType={genreType}
           searchInput={searchInput}
+          setplayBarActivate={setplayBarActivate}
         />
       </div>
-      <Footer />
+      <Footer playBarActivate={playBarActivate} />
     </div>
   );
 }
