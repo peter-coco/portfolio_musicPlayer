@@ -13,6 +13,8 @@ interface Music {
   time: string;
   likes: number;
   views: number;
+  library: string;
+  genre: string;
 }
 
 enum SortType {
@@ -23,10 +25,10 @@ enum SortType {
   VIEWS,
 }
 
-enum GenreType {
-  POP,
-  KPOP,
-  ROCK,
+interface GenreType {
+  POP: string;
+  KPOP: string;
+  ROCK: string;
 }
 
 // interface Res{
@@ -69,7 +71,7 @@ function SearchBar({ setSearchInput }: { setSearchInput: Function }) {
             //   return;
             // }
 
-            let found = musicList.some((el) => el.title === inputText);
+            // let found = musicList.some((el) => el.title === inputText);
 
             // for (let i = 0; i < musicList.length; i++) {
             //   console.log(musicList[i].title, inputText);
@@ -92,11 +94,13 @@ function SearchBar({ setSearchInput }: { setSearchInput: Function }) {
 function PlayerNav({
   setSearchInput,
   setSortType,
+  setGenreType,
   setLibrarySideBarActivate,
   setRankSideBarActivate,
 }: {
   setSearchInput: Function;
   setSortType: Function;
+  setGenreType: Function;
   setLibrarySideBarActivate: Function;
   setRankSideBarActivate: Function;
 }) {
@@ -112,7 +116,12 @@ function PlayerNav({
         <i
           onClick={() => {
             setSearchInput("");
+            setGenreType("");
             setSortType(SortType.TITLES);
+            if (rankSideBarToggle === false) {
+              setRankSideBarToggle(!rankSideBarToggle);
+              setRankSideBarActivate(rankSideBarToggle);
+            }
           }}
           className="fas fa-home"
         ></i>
@@ -122,16 +131,18 @@ function PlayerNav({
             // console.log(librarySideBarActivate);
             setRankSideBarToggle(!rankSideBarToggle);
             setRankSideBarActivate(rankSideBarToggle);
+            setGenreType("");
+            setSortType(SortType.VIEWS);
           }}
         ></i>
-        <i
+        {/* <i
           className="far fa-list-alt"
           onClick={() => {
             // console.log(librarySideBarActivate);
             setLibrarySideBarToggle(!librarySideBarToggle);
             setLibrarySideBarActivate(librarySideBarToggle);
           }}
-        ></i>
+        ></i> */}
 
         <i className="fas fa-user-circle"></i>
       </div>
@@ -148,9 +159,11 @@ function PlayerNav({
 
 function MusicList({
   sortType,
+  setGenreType,
   searchInput,
 }: {
   searchInput: string;
+  setGenreType: string;
   sortType: SortType;
 }) {
   const [musicList, setMusicList] = useState<Music[]>([]);
@@ -169,6 +182,7 @@ function MusicList({
     <main id="player-main">
       {musicList
         .filter((el) => el.title.includes(searchInput))
+        .filter((el) => el.genre.includes(setGenreType))
         .sort((a, b) => {
           switch (sortType) {
             case SortType.ALBUMS:
@@ -236,44 +250,46 @@ function Footer() {
   );
 }
 
-function LibrarySideBar({
-  setSortType,
-  librarySideBarActivate,
-}: {
-  setSortType: Function;
-  librarySideBarActivate: boolean;
-}) {
-  return (
-    <div
-      style={librarySideBarActivate ? { display: "flex" } : { display: "none" }}
-      className="library-sidebar"
-    >
-      <div
-        className="sidebar-views"
-        onClick={() => {
-          setSortType(SortType.VIEWS);
-        }}
-      >
-        조회수별
-      </div>
-      <div
-        className="sidebar-likes"
-        onClick={() => {
-          setSortType(SortType.LIKES);
-        }}
-      >
-        좋아요별
-      </div>
-      <div className="sidebar-menu">등록일수</div>
-    </div>
-  );
-}
+// function LibrarySideBar({
+//   setSortType,
+//   librarySideBarActivate,
+// }: {
+//   setSortType: Function;
+//   librarySideBarActivate: boolean;
+// }) {
+//   return (
+//     <div
+//       style={librarySideBarActivate ? { display: "flex" } : { display: "none" }}
+//       className="library-sidebar"
+//     >
+//       <div
+//         className="sidebar-views"
+//         onClick={() => {
+//           setSortType(SortType.VIEWS);
+//         }}
+//       >
+//         조회수별
+//       </div>
+//       <div
+//         className="sidebar-likes"
+//         onClick={() => {
+//           setSortType(SortType.LIKES);
+//         }}
+//       >
+//         좋아요별
+//       </div>
+//       <div className="sidebar-menu">등록일수</div>
+//     </div>
+//   );
+// }
 
 function RankSideBar({
   setSortType,
+  setGenreType,
   rankSideBarActivate,
 }: {
   setSortType: Function;
+  setGenreType: Function;
   rankSideBarActivate: boolean;
 }) {
   return (
@@ -282,28 +298,56 @@ function RankSideBar({
       className="rank-sidebar"
     >
       <div
-        className="sidebar-views"
+        className="sidebar-menu"
         onClick={() => {
-          setSortType(GenreType.POP);
+          setGenreType("");
+          setSortType(SortType.VIEWS);
+        }}
+      >
+        전체
+      </div>
+      <div
+        className="sidebar-pop"
+        onClick={() => {
+          setGenreType("POP");
+          setSortType(SortType.VIEWS);
         }}
       >
         POP
       </div>
       <div
-        className="sidebar-likes"
+        className="sidebar-kpop"
         onClick={() => {
-          setSortType(GenreType.KPOP);
+          setGenreType("KPOP");
+          setSortType(SortType.VIEWS);
         }}
       >
         K-POP
       </div>
       <div
-        className="sidebar-menu"
+        className="sidebar-rock"
         onClick={() => {
-          setSortType(GenreType.ROCK);
+          setGenreType("ROCK");
+          setSortType(SortType.VIEWS);
         }}
       >
         ROCK
+      </div>
+      {/* <div
+        className="sidebar-views"
+        onClick={() => {
+          setSortType(SortType.VIEWS);
+        }}
+      >
+        조회수별
+      </div> */}
+      <div
+        className="sidebar-likes"
+        onClick={() => {
+          setSortType(SortType.LIKES);
+        }}
+      >
+        좋아요순
       </div>
     </div>
   );
@@ -317,6 +361,8 @@ function MusicPlayer() {
   const [searchInput, setSearchInput] = useState("");
 
   const [sortType, setSortType] = useState<SortType>(SortType.LIKES);
+  const [genreType, setGenreType] = useState<string>("POP");
+
   const [librarySideBarActivate, setLibrarySideBarActivate] = useState<boolean>(
     false
   );
@@ -329,19 +375,25 @@ function MusicPlayer() {
       <PlayerNav
         setSearchInput={setSearchInput}
         setSortType={setSortType}
+        setGenreType={setGenreType}
         setLibrarySideBarActivate={setLibrarySideBarActivate}
         setRankSideBarActivate={setRankSideBarActivate}
       />
       <div id="main-wr">
         <RankSideBar
           setSortType={setSortType}
+          setGenreType={setGenreType}
           rankSideBarActivate={rankSideBarActivate}
         />
-        <LibrarySideBar
+        {/* <LibrarySideBar
           setSortType={setSortType}
           librarySideBarActivate={librarySideBarActivate}
+        /> */}
+        <MusicList
+          sortType={sortType}
+          setGenreType={genreType}
+          searchInput={searchInput}
         />
-        <MusicList sortType={sortType} searchInput={searchInput} />
       </div>
       <Footer />
     </div>

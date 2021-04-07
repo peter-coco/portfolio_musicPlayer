@@ -13,6 +13,7 @@ let data = {
       likes: 128,
       views: 5,
       library: "",
+      genre: "ROCK",
       // url:
       //   "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTAzMjFfMjc1%2FMDAxNjE2MjU2MTYyNTU0.89_q0o0vE_OOnjXJpKDVv6x372sM_MxP3vg20jSMG3sg.rOlPkl7mEiJ3sKfp13pUIqfAMwB-hchowGtYqm3pp80g.PNG.tjsal2772%2F%25B3%25B2%25C7%25D8_%25BF%25A9%25C7%25E04.png&type=sc960_832",
     },
@@ -24,6 +25,7 @@ let data = {
       likes: 62,
       views: 128,
       library: "",
+      genre: "ROCK",
     },
     {
       title: "Best Part",
@@ -33,6 +35,7 @@ let data = {
       likes: 13,
       views: 52,
       library: "",
+      genre: "POP",
     },
     {
       title: "Bad",
@@ -42,6 +45,7 @@ let data = {
       likes: 78,
       views: 111,
       library: "",
+      genre: "POP",
     },
   ],
 };
