@@ -129,8 +129,17 @@ function MusicList({
 }) {
   const [musicList, setMusicList] = useState<Music[]>([]);
 
+  let data123 = { a: "a" };
+
   useEffect(() => {
-    // fetch("http://localhost:8080/setLib?title=~~&lib=~~~")
+    fetch("http://localhost:8080/", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json/",
+      },
+      body: JSON.stringify(data123),
+    });
 
     fetch("http://localhost:8080/")
       .then((e) => e.json())

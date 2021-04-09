@@ -1,7 +1,42 @@
+const e = require("express");
 const express = require("express");
 const app = express();
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
+app.use(express.json());
+
+app.post("/", (req, res) => {
+  console.log("request is finished");
+  res.json(req.body);
+  console.log(req.body);
+  console.log(req.body.a);
+});
+
+// app.get("/setLib", (req, res) => {
+//   const { lib, title } = req.query;
+
+//   data.res = data.res.map((e) => {
+//     if (e.title === title) {
+//       return { ...e, library: lib };
+//     }
+//     return e;
+//   });
+
+//   res.json({
+//     res: "OK",
+//   });
+// });
+
+app.get("/", (req, res) => {
+  res.header({
+    "Access-Control-Allow-Origin": "*",
+  });
+  res.json(data);
+});
+
+app.listen(8080, () => {
+  console.log("start!");
+});
 
 let data = {
   res: [
@@ -47,29 +82,3 @@ let data = {
     },
   ],
 };
-
-app.get("/setLib", (req, res) => {
-  const { lib, title } = req.query;
-
-  data.res = data.res.map((e) => {
-    if (e.title === title) {
-      return { ...e, library: lib };
-    }
-    return e;
-  });
-
-  res.json({
-    res: "OK",
-  });
-});
-
-app.get("/", (req, res) => {
-  res.header({
-    "Access-Control-Allow-Origin": "*",
-  });
-  res.json(data);
-});
-
-app.listen(8080, () => {
-  console.log("start!");
-});
