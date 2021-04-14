@@ -18,9 +18,10 @@
   background: rgba(203, 203, 203, 0.7);
   border-radius: 20px;
   width: 100%;
-  height: 730px;
+  /* height: 730px; */
   gap: 20px;
   max-width: 1200px;
+  max-height: 730px;
   padding: 46px;
 }
 
@@ -135,14 +136,78 @@
   animation: fadeIn 0.5s ease-in-out;
 }
 
-.music-count {
+/* .music-count {
   width: 75px;
   height: 42px;
+  background: red;
   background: #a2a516;
   border-radius: 10px;
   line-height: 42px;
   text-align: center;
   margin-right: 16px;
+} */
+
+/* .music-info > div {
+  flex: 1;
+} */
+.music-count {
+  flex: 1;
+  text-align: center;
+}
+
+.music-cover {
+  /* flex: 1; */
+  width: 100px;
+}
+
+.music-title {
+  flex: 3;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  padding: 15px;
+}
+.music-artist {
+  flex: 2;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.music-album {
+  flex: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.music-playTime {
+  flex: 1;
+  text-align: center;
+}
+
+.music-likes {
+  flex: 1;
+  text-align: center;
+}
+
+.music-views {
+  flex: 1;
+  text-align: center;
+}
+
+.fa-thumbs-up {
+  flex: 1;
+  text-align: center;
+}
+
+.fa-ellipsis-v {
+  flex: 1;
+  text-align: center;
 }
 
 .music-info {
@@ -154,7 +219,9 @@
   height: 42px;
   background: #a2a516;
   border-radius: 10px;
-  margin-right: 22px;
+  /* margin-right: 22px; */
+  box-sizing: border-box;
+  padding: 5px;
 }
 
 .music-cover {
@@ -277,6 +344,10 @@
 } */
 
 @media (max-width: 750px) {
+  #musicPlayer {
+    padding: 18px;
+  }
+
   #player-navBar {
     flex-direction: column;
     gap: 10px;
@@ -308,6 +379,13 @@
     flex-direction: row;
     width: 100%;
     height: 40px;
+  }
+
+  .music-album,
+  .music-artist,
+  .music-playTime,
+  .music-likes {
+    display: none;
   }
 }
 

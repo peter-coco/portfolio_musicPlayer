@@ -132,15 +132,6 @@ function MusicList({
   let data123 = { a: "a" };
 
   useEffect(() => {
-    fetch("http://localhost:8080/", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json/",
-      },
-      body: JSON.stringify(data123),
-    });
-
     fetch("http://localhost:8080/")
       .then((e) => e.json())
       // .then((e) => (list = e.res))
@@ -153,6 +144,7 @@ function MusicList({
       {musicList
         .filter((el) => el.title.includes(searchInput))
         .filter((el) => el.genre.includes(setGenreType))
+        // .filter((el) => el.library.includes(setLibraryType))
         .sort((a, b) => {
           switch (sortType) {
             case SortType.ALBUMS:
@@ -171,7 +163,7 @@ function MusicList({
         })
         .map((e, idx) => (
           <Music
-            key={idx}
+            key={e.title + e.album + e.artist}
             music={e}
             setplayBarActivate={setplayBarActivate}
             setplayBarMusicInfor={setplayBarMusicInfor}
@@ -211,7 +203,12 @@ function Music({
           className="fas fa-ellipsis-v"
           onClick={() => {
             setSubOperationActivate(!operationToggle);
-            setoperationToggle(!operationToggle);
+            // pre(가제)는 직전값을 의미(보장)
+            setoperationToggle((pre) => !pre);
+
+            // false
+            // true
+            // true
           }}
         >
           <MusicSubOperation
@@ -244,10 +241,14 @@ function MusicSubOperation({
 
   return (
     <div
+      // onClick={(e) => {
+      //   e.stopPropagation();
+      // }}
       style={subOperationActivate ? { display: "flex" } : { display: "none" }}
       className="music-sub-operation"
     >
       <div
+        // style={{ background: "red" }}
         className="sub-operation-menus"
         onClick={() => {
           if (!playBarToggle) {
@@ -259,8 +260,39 @@ function MusicSubOperation({
       >
         재생
       </div>
-      <div className="sub-operation-menus">재생목록에 담기</div>
-      <div className="sub-operation-menus">재생목록에서 삭제</div>
+      <div
+        className="sub-operation-menus"
+        onClick={() => {
+          fetch(`http://localhost:8080/addLib/${music.title}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              lib: "selected",
+            }),
+          })
+            .then((response) => response.json())
+            .then((response) => console.log(response));
+        }}
+      >
+        재생목록에 담기
+      </div>
+      <div
+        className="sub-operation-menus"
+        onClick={() => {
+          fetch(`http://localhost:8080/delLib/${music.title}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((response) => console.log(response));
+        }}
+      >
+        재생목록에서 삭제
+      </div>
     </div>
   );
 }
@@ -273,6 +305,11 @@ function Footer({
   playBarMusicInfor: Music;
 }) {
   const [playNpauseToggle, setPlayNpauseToggle] = useState<boolean>(false);
+
+  // const options = {};
+
+  // useEffect(() => {}, []);
+
   return (
     <footer
       style={playBarActivate ? { display: "flex" } : { display: "none" }}
@@ -388,9 +425,9 @@ function MusicPlayer() {
   const [sortType, setSortType] = useState<SortType>(SortType.LIKES);
   const [genreType, setGenreType] = useState<string>("");
 
-  // const [librarySideBarActivate, setLibrarySideBarActivate] = useState<boolean>(
-  //   false
-  // );
+  const [librarySideBarActivate, setLibrarySideBarActivate] = useState<boolean>(
+    false
+  );
 
   const [rankSideBarActivate, setRankSideBarActivate] = useState<boolean>(
     false
@@ -444,9 +481,12 @@ function MusicPlayer() {
 
 function App() {
   return (
-    <div id="background">
-      <MusicPlayer />
-    </div>
+    <>
+      <div id="background">
+        <MusicPlayer />
+      </div>
+      <progress value={1} />
+    </>
   );
 }
 

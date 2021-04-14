@@ -1,15 +1,53 @@
 const e = require("express");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 
 app.use(express.static("public"));
 app.use(express.json());
 
+app.use(cors());
+
 app.post("/", (req, res) => {
   console.log("request is finished");
-  res.json(req.body);
   console.log(req.body);
-  console.log(req.body.a);
+  console.log(req.body.name);
+  const data = req.body;
+
+  res.json({
+    // status: "success",
+    name: data.name,
+    age: data.age,
+    // a: data.a,
+  });
+});
+
+// /addlib/aa
+// /addlib/bb
+
+app.delete("/delLib/:title", (req, res) => {
+  const { title } = req.params;
+
+  data.res = data.res.map((e) =>
+    e.title === title ? { ...e, library: "" } : e
+  );
+
+  res.json({
+    res: "OK",
+  });
+});
+
+app.post("/addLib/:title", (req, res) => {
+  const { title } = req.params;
+  const { lib } = req.body;
+
+  data.res = data.res.map((e) =>
+    e.title === title ? { ...e, library: lib } : e
+  );
+
+  res.json({
+    res: "OK",
+  });
 });
 
 // app.get("/setLib", (req, res) => {
@@ -47,7 +85,7 @@ let data = {
       time: "4:27",
       likes: 128,
       views: 5,
-      library: "",
+      library: "A",
       genre: "ROCK",
     },
     {
