@@ -1,11 +1,11 @@
 const e = require("express");
 const express = require("express");
-const cors = require("cors");
 const app = express();
 
 app.use(express.static("public"));
 app.use(express.json());
 
+const cors = require("cors");
 app.use(cors());
 
 app.post("/", (req, res) => {
@@ -33,7 +33,7 @@ app.delete("/delLib/:title", (req, res) => {
   );
 
   res.json({
-    res: "OK",
+    res: "Deleted !!",
   });
 });
 
@@ -41,12 +41,18 @@ app.post("/addLib/:title", (req, res) => {
   const { title } = req.params;
   const { lib } = req.body;
 
+  console.log(req.params);
+  console.log(lib);
+  res.header({
+    "Access-Control-Allow-Origin": "http://localhost:3000",
+  });
+
   data.res = data.res.map((e) =>
     e.title === title ? { ...e, library: lib } : e
   );
 
   res.json({
-    res: "OK",
+    res: "selected !!",
   });
 });
 
@@ -67,7 +73,7 @@ app.post("/addLib/:title", (req, res) => {
 
 app.get("/", (req, res) => {
   res.header({
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "http://localhost:3000",
   });
   res.json(data);
 });
@@ -85,7 +91,7 @@ let data = {
       time: "4:27",
       likes: 128,
       views: 5,
-      library: "A",
+      library: "",
       genre: "ROCK",
     },
     {

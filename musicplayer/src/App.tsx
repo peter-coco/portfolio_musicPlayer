@@ -57,11 +57,13 @@ function SearchBar({ setSearchInput }: { setSearchInput: Function }) {
 function PlayerNav({
   setSearchInput,
   setSortType,
+  setLibraryType,
   setGenreType,
   setRankSideBarActivate,
 }: {
   setSearchInput: Function;
   setSortType: Function;
+  setLibraryType: Function;
   setGenreType: Function;
   setRankSideBarActivate: Function;
 }) {
@@ -75,9 +77,10 @@ function PlayerNav({
           onClick={() => {
             setSearchInput("");
             setGenreType("");
+            setLibraryType("");
             // setSortType(SortType.TITLES);
             if (rankSideBarToggle === false) {
-              setRankSideBarToggle(!rankSideBarToggle);
+              setRankSideBarToggle((pre) => !pre);
               setRankSideBarActivate(rankSideBarToggle);
             }
           }}
@@ -86,9 +89,10 @@ function PlayerNav({
         <i
           className="fas fa-chart-bar"
           onClick={() => {
-            setRankSideBarToggle(!rankSideBarToggle);
+            setRankSideBarToggle((pre) => !pre);
             setRankSideBarActivate(rankSideBarToggle);
             setGenreType("");
+            setLibraryType("");
             setSortType(SortType.VIEWS);
           }}
         ></i>
@@ -98,6 +102,13 @@ function PlayerNav({
             // console.log(librarySideBarActivate);
             // setLibrarySideBarToggle(!librarySideBarToggle);
             // setLibrarySideBarActivate(librarySideBarToggle);
+
+            setLibraryType("selected");
+            setGenreType("");
+            if (rankSideBarToggle === false) {
+              setRankSideBarToggle((pre) => !pre);
+              setRankSideBarActivate(rankSideBarToggle);
+            }
           }}
         ></i>
 
@@ -118,25 +129,27 @@ function MusicList({
   sortType,
   setGenreType,
   searchInput,
+  libraryType,
+  musicList,
   setplayBarActivate,
   setplayBarMusicInfor,
+  setMusicList,
 }: {
   searchInput: string;
   setGenreType: string;
   sortType: SortType;
+  libraryType: string;
+  musicList: Music[];
   setplayBarActivate: Function;
   setplayBarMusicInfor: Function;
+  setMusicList: Function;
 }) {
-  const [musicList, setMusicList] = useState<Music[]>([]);
-
-  let data123 = { a: "a" };
+  // const [musicList, setMusicList] = useState<Music[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8080/")
       .then((e) => e.json())
-      // .then((e) => (list = e.res))
       .then((e) => setMusicList(e.res));
-    // .then((e) => console.log(list));
   }, []);
 
   return (
@@ -144,7 +157,7 @@ function MusicList({
       {musicList
         .filter((el) => el.title.includes(searchInput))
         .filter((el) => el.genre.includes(setGenreType))
-        // .filter((el) => el.library.includes(setLibraryType))
+        .filter((el) => el.library.includes(libraryType))
         .sort((a, b) => {
           switch (sortType) {
             case SortType.ALBUMS:
@@ -167,6 +180,7 @@ function MusicList({
             music={e}
             setplayBarActivate={setplayBarActivate}
             setplayBarMusicInfor={setplayBarMusicInfor}
+            setMusicList={setMusicList}
           />
         ))}
     </main>
@@ -177,10 +191,12 @@ function Music({
   music,
   setplayBarActivate,
   setplayBarMusicInfor,
+  setMusicList,
 }: {
   music: Music;
   setplayBarActivate: Function;
   setplayBarMusicInfor: Function;
+  setMusicList: Function;
 }) {
   const [subOperationActivate, setSubOperationActivate] = useState<boolean>(
     false
@@ -216,6 +232,7 @@ function Music({
             subOperationActivate={subOperationActivate}
             setplayBarActivate={setplayBarActivate}
             setplayBarMusicInfor={setplayBarMusicInfor}
+            setMusicList={setMusicList}
           />
         </i>
       </div>
@@ -231,13 +248,22 @@ function MusicSubOperation({
   subOperationActivate,
   setplayBarActivate,
   setplayBarMusicInfor,
+  setMusicList,
 }: {
   music: Music;
   subOperationActivate: boolean;
   setplayBarActivate: Function;
   setplayBarMusicInfor: Function;
+  setMusicList: Function;
 }) {
   const [playBarToggle, setPlayBarToggle] = useState<boolean>(false);
+  const [checkClickLibrary, setCheckClickLibrary] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/")
+      .then((e) => e.json())
+      .then((e) => setMusicList(e.res));
+  }, [checkClickLibrary]);
 
   return (
     <div
@@ -265,6 +291,7 @@ function MusicSubOperation({
         onClick={() => {
           fetch(`http://localhost:8080/addLib/${music.title}`, {
             method: "POST",
+            // mode: "no-cors",
             headers: {
               "Content-Type": "application/json",
             },
@@ -274,6 +301,7 @@ function MusicSubOperation({
           })
             .then((response) => response.json())
             .then((response) => console.log(response));
+          setCheckClickLibrary(!checkClickLibrary);
         }}
       >
         재생목록에 담기
@@ -289,6 +317,7 @@ function MusicSubOperation({
           })
             .then((response) => response.json())
             .then((response) => console.log(response));
+          setCheckClickLibrary(!checkClickLibrary);
         }}
       >
         재생목록에서 삭제
@@ -305,10 +334,6 @@ function Footer({
   playBarMusicInfor: Music;
 }) {
   const [playNpauseToggle, setPlayNpauseToggle] = useState<boolean>(false);
-
-  // const options = {};
-
-  // useEffect(() => {}, []);
 
   return (
     <footer
@@ -424,10 +449,8 @@ function MusicPlayer() {
   const [searchInput, setSearchInput] = useState("");
   const [sortType, setSortType] = useState<SortType>(SortType.LIKES);
   const [genreType, setGenreType] = useState<string>("");
-
-  const [librarySideBarActivate, setLibrarySideBarActivate] = useState<boolean>(
-    false
-  );
+  const [libraryType, setLibraryType] = useState<string>("");
+  const [musicList, setMusicList] = useState<Music[]>([]);
 
   const [rankSideBarActivate, setRankSideBarActivate] = useState<boolean>(
     false
@@ -450,6 +473,7 @@ function MusicPlayer() {
       <PlayerNav
         setSearchInput={setSearchInput}
         setSortType={setSortType}
+        setLibraryType={setLibraryType}
         setGenreType={setGenreType}
         setRankSideBarActivate={setRankSideBarActivate}
       />
@@ -467,8 +491,11 @@ function MusicPlayer() {
           sortType={sortType}
           setGenreType={genreType}
           searchInput={searchInput}
+          libraryType={libraryType}
+          musicList={musicList}
           setplayBarActivate={setplayBarActivate}
           setplayBarMusicInfor={setplayBarMusicInfor}
+          setMusicList={setMusicList}
         />
       </div>
       <Footer
@@ -485,7 +512,6 @@ function App() {
       <div id="background">
         <MusicPlayer />
       </div>
-      <progress value={1} />
     </>
   );
 }
