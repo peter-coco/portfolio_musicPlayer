@@ -14,6 +14,7 @@ interface Music {
   views: number;
   library: string;
   genre: string;
+  isLike: boolean;
 }
 
 enum SortType {
@@ -93,6 +94,7 @@ function PlayerNav({
             setRankSideBarActivate(rankSideBarToggle);
             setGenreType("");
             setLibraryType("");
+            setSearchInput("");
             setSortType(SortType.VIEWS);
           }}
         ></i>
@@ -202,11 +204,18 @@ function Music({
     false
   );
   const [operationToggle, setoperationToggle] = useState<boolean>(false);
+  const [checkClickThumbsUp, setCheckClickThumbsUp] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/")
+      .then((e) => e.json())
+      .then((e) => setMusicList(e.res));
+  }, [checkClickThumbsUp]);
 
   return (
     <div className="music">
       <div className="music-info">
-        <div className="music-count">1</div>
+        {/* <div className="music-count">1</div> */}
         <div className="music-cover"></div>
         <div className="music-title">{music.title}</div>
         <div className="music-artist">{music.artist}</div>
@@ -214,9 +223,36 @@ function Music({
         <div className="music-playTime">{music.time}</div>
         <div className="music-likes">{music.likes}</div>
         <div className="music-views">{music.views}</div>
-        <i className="fas fa-thumbs-up"></i>
         <i
-          className="fas fa-ellipsis-v"
+          style={music.isLike ? { color: "white" } : { color: "black" }}
+          className="fas fa-thumbs-up"
+          onClick={() => {
+            if (music.isLike === false) {
+              fetch(`http://localhost:8080/addLikes/${music.title}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((e) => e.json())
+                .then((e) => console.log(e.res));
+              setCheckClickThumbsUp(!checkClickThumbsUp);
+            } else {
+              fetch(`http://localhost:8080/subLikes/${music.title}`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+                .then((e) => e.json())
+                .then((e) => console.log(e.res));
+              setCheckClickThumbsUp(!checkClickThumbsUp);
+            }
+            // setplayBarMusicInfor(music);
+          }}
+        ></i>
+        <i
+          className="fas fa-ellipsis-v list-ellipsis"
           onClick={() => {
             setSubOperationActivate(!operationToggle);
             // pre(가제)는 직전값을 의미(보장)
@@ -280,8 +316,8 @@ function MusicSubOperation({
           if (!playBarToggle) {
             setplayBarActivate(!playBarToggle);
             setPlayBarToggle(!playBarToggle);
-            setplayBarMusicInfor(music);
           }
+          setplayBarMusicInfor(music);
         }}
       >
         재생
@@ -304,7 +340,7 @@ function MusicSubOperation({
           setCheckClickLibrary(!checkClickLibrary);
         }}
       >
-        재생목록에 담기
+        즐겨찾기에 담기
       </div>
       <div
         className="sub-operation-menus"
@@ -320,7 +356,7 @@ function MusicSubOperation({
           setCheckClickLibrary(!checkClickLibrary);
         }}
       >
-        재생목록에서 삭제
+        즐겨찾기에서 삭제
       </div>
     </div>
   );
@@ -348,7 +384,6 @@ function Footer({
         <div className="music-playTime">{playBarMusicInfor.time}</div>
         <div className="music-likes">{playBarMusicInfor.likes}</div>
         <div className="music-views">{playBarMusicInfor.views}</div>
-        <i className="fas fa-thumbs-up"></i>
       </div>
       <div className="player-operation">
         {/* <i className="fas fa-step-backward"></i> */}
@@ -369,17 +404,19 @@ function Footer({
         {/* <i className="fas fa-step-forward"></i> */}
         <i className="fas fa-volume-down"></i>
 
-        {/* <i className="fas fa-ellipsis-v"></i> */}
+        {/* <i className="fas fa-ellipsis-v playingNow-ellipsis"></i> */}
       </div>
     </footer>
   );
 }
 
 function RankSideBar({
+  setSearchInput,
   setSortType,
   setGenreType,
   rankSideBarActivate,
 }: {
+  setSearchInput: Function;
   setSortType: Function;
   setGenreType: Function;
   rankSideBarActivate: boolean;
@@ -392,6 +429,7 @@ function RankSideBar({
       <div
         className="sidebar-menu"
         onClick={() => {
+          setSearchInput("");
           setGenreType("");
           setSortType(SortType.VIEWS);
         }}
@@ -401,6 +439,7 @@ function RankSideBar({
       <div
         className="sidebar-pop"
         onClick={() => {
+          setSearchInput("");
           setGenreType("POP");
           setSortType(SortType.VIEWS);
         }}
@@ -410,6 +449,7 @@ function RankSideBar({
       <div
         className="sidebar-kpop"
         onClick={() => {
+          setSearchInput("");
           setGenreType("KPOP");
           setSortType(SortType.VIEWS);
         }}
@@ -419,6 +459,7 @@ function RankSideBar({
       <div
         className="sidebar-rock"
         onClick={() => {
+          setSearchInput("");
           setGenreType("ROCK");
           setSortType(SortType.VIEWS);
         }}
@@ -436,6 +477,8 @@ function RankSideBar({
       <div
         className="sidebar-likes"
         onClick={() => {
+          setSearchInput("");
+          setGenreType("");
           setSortType(SortType.LIKES);
         }}
       >
@@ -466,6 +509,7 @@ function MusicPlayer() {
     views: 0,
     library: "",
     genre: "",
+    isLike: false,
   });
 
   return (
@@ -479,6 +523,7 @@ function MusicPlayer() {
       />
       <div id="main-wr">
         <RankSideBar
+          setSearchInput={setSearchInput}
           setSortType={setSortType}
           setGenreType={setGenreType}
           rankSideBarActivate={rankSideBarActivate}

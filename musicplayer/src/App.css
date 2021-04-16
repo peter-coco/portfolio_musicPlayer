@@ -136,28 +136,13 @@
   animation: fadeIn 0.5s ease-in-out;
 }
 
-/* .music-count {
-  width: 75px;
-  height: 42px;
-  background: red;
-  background: #a2a516;
-  border-radius: 10px;
-  line-height: 42px;
-  text-align: center;
-  margin-right: 16px;
-} */
-
-/* .music-info > div {
-  flex: 1;
-} */
-.music-count {
-  flex: 1;
-  text-align: center;
-}
-
 .music-cover {
-  /* flex: 1; */
-  width: 100px;
+  margin-left: 10px;
+  width: 38px;
+  height: 32px;
+  line-height: 32px;
+  border-radius: 10px;
+  background: url(./img/albums/coldplay_Parachutes.jpg) center/cover;
 }
 
 .music-title {
@@ -169,43 +154,20 @@
   box-sizing: border-box;
   padding: 15px;
 }
-.music-artist {
-  flex: 2;
-  text-align: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
+.music-artist,
 .music-album {
   flex: 2;
+  text-align: center;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  text-align: center;
 }
 
-.music-playTime {
-  flex: 1;
-  text-align: center;
-}
-
-.music-likes {
-  flex: 1;
-  text-align: center;
-}
-
-.music-views {
-  flex: 1;
-  text-align: center;
-}
-
-.fa-thumbs-up {
-  flex: 1;
-  text-align: center;
-}
-
-.fa-ellipsis-v {
+.music-playTime,
+.music-likes,
+.music-views,
+.fa-thumbs-up,
+.list-ellipsis {
   flex: 1;
   text-align: center;
 }
@@ -222,14 +184,6 @@
   /* margin-right: 22px; */
   box-sizing: border-box;
   padding: 5px;
-}
-
-.music-cover {
-  width: 38px;
-  height: 32px;
-  line-height: 32px;
-  border-radius: 10px;
-  background: url(./img/albums/coldplay_Parachutes.jpg) center/cover;
 }
 
 /* .music-cover > img {
@@ -262,7 +216,11 @@
 .sub-operation-menus {
   cursor: pointer;
   width: 100%;
+  height: 20px;
+  line-height: 20px;
   text-align: center;
+  background-color: rgb(29, 117, 98);
+  /* border-radius: 10px; */
 }
 
 #main-wr {

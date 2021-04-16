@@ -1,30 +1,58 @@
 const e = require("express");
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 app.use(express.static("public"));
 app.use(express.json());
 
-const cors = require("cors");
 app.use(cors());
 
-app.post("/", (req, res) => {
-  console.log("request is finished");
-  console.log(req.body);
-  console.log(req.body.name);
-  const data = req.body;
+// add & delete music likes
+app.delete("/subLikes/:title", (req, res) => {
+  const { title } = req.params;
+
+  // data.res = data.res.map((e) =>
+  //   e.title === title ? { ...e, isLike: false } : e
+  // );
+
+  for (let dataBase of data.res) {
+    if (dataBase.title === title) {
+      dataBase.isLike = false;
+      dataBase.likes -= 1;
+    }
+  }
 
   res.json({
-    // status: "success",
-    name: data.name,
-    age: data.age,
-    // a: data.a,
+    res: "sub Like !!",
   });
 });
 
-// /addlib/aa
-// /addlib/bb
+app.post("/addLikes/:title", (req, res) => {
+  const { title } = req.params;
 
+  console.log(req.params);
+  res.header({
+    "Access-Control-Allow-Origin": "http://localhost:3000",
+  });
+
+  // data.res = data.res.map((e) =>
+  //   e.title === title ? { ...e, isLike: true } : e
+  // );
+
+  for (let dataBase of data.res) {
+    if (dataBase.title === title) {
+      dataBase.isLike = true;
+      dataBase.likes += 1;
+    }
+  }
+
+  res.json({
+    res: "add Like !!",
+  });
+});
+
+// add & delete music list in library
 app.delete("/delLib/:title", (req, res) => {
   const { title } = req.params;
 
@@ -56,21 +84,6 @@ app.post("/addLib/:title", (req, res) => {
   });
 });
 
-// app.get("/setLib", (req, res) => {
-//   const { lib, title } = req.query;
-
-//   data.res = data.res.map((e) => {
-//     if (e.title === title) {
-//       return { ...e, library: lib };
-//     }
-//     return e;
-//   });
-
-//   res.json({
-//     res: "OK",
-//   });
-// });
-
 app.get("/", (req, res) => {
   res.header({
     "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -93,6 +106,7 @@ let data = {
       views: 5,
       library: "",
       genre: "ROCK",
+      isLike: false,
     },
     {
       title: "Watermelon Sugar",
@@ -103,6 +117,7 @@ let data = {
       views: 128,
       library: "",
       genre: "ROCK",
+      isLike: false,
     },
     {
       title: "Best Part",
@@ -113,6 +128,7 @@ let data = {
       views: 52,
       library: "",
       genre: "POP",
+      isLike: false,
     },
     {
       title: "Bad",
@@ -123,6 +139,7 @@ let data = {
       views: 111,
       library: "",
       genre: "POP",
+      isLike: false,
     },
   ],
 };
