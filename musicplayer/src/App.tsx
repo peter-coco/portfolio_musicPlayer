@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import AlbumImg from "./img/albums/coldplay_Parachutes.jpg";
+// import AlbumImg from "./img/albums/coldplay_Parachutes.jpg";
 
 import { isThisTypeNode } from "typescript";
 import { NONAME } from "node:dns";
@@ -9,7 +9,8 @@ interface Music {
   title: string;
   artist: string;
   album: string;
-  time: string;
+  albumCover: string;
+  time: number;
   likes: number;
   views: number;
   library: string;
@@ -24,6 +25,7 @@ enum SortType {
   LIKES,
   VIEWS,
 }
+
 function SearchBar({ setSearchInput }: { setSearchInput: Function }) {
   const [inputText, setInputText] = useState<string>("");
   const [musicList, setMusicList] = useState<Music[]>([]);
@@ -69,29 +71,42 @@ function PlayerNav({
   setRankSideBarActivate: Function;
 }) {
   const [rankSideBarToggle, setRankSideBarToggle] = useState<boolean>(true);
+  const [homeBarToggle, setHomeBarToggle] = useState<boolean>(true);
+  const [libraryBarToggle, setLibraryBarToggle] = useState<boolean>(false);
 
   return (
     <nav id="player-navBar">
       <div id="main-logo">MUSIGRAM</div>
       <div id="menu-bar">
         <i
+          style={homeBarToggle ? { color: "white" } : { color: "black" }}
           onClick={() => {
             setSearchInput("");
             setGenreType("");
             setLibraryType("");
-            // setSortType(SortType.TITLES);
+            setSortType(SortType.LIKES);
+
             if (rankSideBarToggle === false) {
               setRankSideBarToggle((pre) => !pre);
               setRankSideBarActivate(rankSideBarToggle);
             }
+
+            if (!homeBarToggle) setHomeBarToggle((pre) => !pre);
+            if (libraryBarToggle) setLibraryBarToggle((pre) => !pre);
           }}
           className="fas fa-home"
         ></i>
         <i
+          style={rankSideBarToggle ? { color: "black" } : { color: "white" }}
           className="fas fa-chart-bar"
           onClick={() => {
-            setRankSideBarToggle((pre) => !pre);
-            setRankSideBarActivate(rankSideBarToggle);
+            if (rankSideBarToggle) {
+              setRankSideBarActivate(rankSideBarToggle);
+              setRankSideBarToggle((pre) => !pre);
+            }
+
+            if (homeBarToggle) setHomeBarToggle((pre) => !pre);
+            if (libraryBarToggle) setLibraryBarToggle((pre) => !pre);
             setGenreType("");
             setLibraryType("");
             setSearchInput("");
@@ -99,6 +114,7 @@ function PlayerNav({
           }}
         ></i>
         <i
+          style={libraryBarToggle ? { color: "white" } : { color: "black" }}
           className="far fa-list-alt"
           onClick={() => {
             // console.log(librarySideBarActivate);
@@ -111,6 +127,8 @@ function PlayerNav({
               setRankSideBarToggle((pre) => !pre);
               setRankSideBarActivate(rankSideBarToggle);
             }
+            if (homeBarToggle) setHomeBarToggle((pre) => !pre);
+            if (!libraryBarToggle) setLibraryBarToggle((pre) => !pre);
           }}
         ></i>
 
@@ -216,7 +234,11 @@ function Music({
     <div className="music">
       <div className="music-info">
         {/* <div className="music-count">1</div> */}
-        <div className="music-cover"></div>
+        {/* <div
+          style={{ background: `url(${music.albumCover}) center/cover` }}
+          className="music-cover"
+        ></div> */}
+        <img src={music.albumCover} className="music-cover" />
         <div className="music-title">{music.title}</div>
         <div className="music-artist">{music.artist}</div>
         <div className="music-album">{music.album}</div>
@@ -370,41 +392,71 @@ function Footer({
   playBarMusicInfor: Music;
 }) {
   const [playNpauseToggle, setPlayNpauseToggle] = useState<boolean>(false);
+  const [musicTime, setMusicTime] = useState<number>(playBarMusicInfor.time);
+  let totalTime = playBarMusicInfor.time;
+  if (playBarActivate) {
+    let timer = setInterval(() => {
+      // console.log(totalTime);
+      if (totalTime == 0) {
+        clearInterval(timer);
+      }
+      --totalTime;
+      setMusicTime(totalTime);
+      // console.log(musicTime);
+    }, 1000);
+  }
 
   return (
     <footer
       style={playBarActivate ? { display: "flex" } : { display: "none" }}
       id="player-footer"
     >
-      <div className="playingNow">
-        <div className="music-album-img"></div>
-        <div className="music-title">{playBarMusicInfor.title}</div>
-        <div className="music-artist">{playBarMusicInfor.artist}</div>
-        <div className="music-album">{playBarMusicInfor.album}</div>
-        <div className="music-playTime">{playBarMusicInfor.time}</div>
-        <div className="music-likes">{playBarMusicInfor.likes}</div>
-        <div className="music-views">{playBarMusicInfor.views}</div>
+      <div id="song-progress-bar">
+        <div
+          style={{
+            width: `${
+              ((playBarMusicInfor.time - musicTime) * 100) /
+              playBarMusicInfor.time
+            }%`,
+          }}
+          id="progress"
+        ></div>
       </div>
-      <div className="player-operation">
-        {/* <i className="fas fa-step-backward"></i> */}
-        <i
-          style={playNpauseToggle ? { display: "block" } : { display: "none" }}
-          className="fas fa-play"
-          onClick={() => {
-            setPlayNpauseToggle(!playNpauseToggle);
-          }}
-        ></i>
-        <i
-          style={!playNpauseToggle ? { display: "block" } : { display: "none" }}
-          className="fas fa-pause"
-          onClick={() => {
-            setPlayNpauseToggle(!playNpauseToggle);
-          }}
-        ></i>
-        {/* <i className="fas fa-step-forward"></i> */}
-        <i className="fas fa-volume-down"></i>
+      <div id="playingNow-wrap">
+        <div className="playingNow">
+          <img src={playBarMusicInfor.albumCover} className="music-cover" />
+          <div className="music-title">{playBarMusicInfor.title}</div>
+          <div className="music-artist">{playBarMusicInfor.artist}</div>
+          <div className="music-album">{playBarMusicInfor.album}</div>
+          <div className="music-playTime">{playBarMusicInfor.time}</div>
+          <div className="music-likes">{playBarMusicInfor.likes}</div>
+          <div className="music-views">{playBarMusicInfor.views}</div>
+        </div>
+        <div className="player-operation">
+          {/* <i className="fas fa-step-backward"></i> */}
+          <i
+            style={
+              playNpauseToggle ? { display: "block" } : { display: "none" }
+            }
+            className="fas fa-play"
+            onClick={() => {
+              setPlayNpauseToggle(!playNpauseToggle);
+            }}
+          ></i>
+          <i
+            style={
+              !playNpauseToggle ? { display: "block" } : { display: "none" }
+            }
+            className="fas fa-pause"
+            onClick={() => {
+              setPlayNpauseToggle(!playNpauseToggle);
+            }}
+          ></i>
+          {/* <i className="fas fa-step-forward"></i> */}
+          <i className="fas fa-volume-down"></i>
 
-        {/* <i className="fas fa-ellipsis-v playingNow-ellipsis"></i> */}
+          {/* <i className="fas fa-ellipsis-v playingNow-ellipsis"></i> */}
+        </div>
       </div>
     </footer>
   );
@@ -488,7 +540,13 @@ function RankSideBar({
   );
 }
 
-function MusicPlayer() {
+function MusicPlayer({
+  playBarMusicInfor,
+  setplayBarMusicInfor,
+}: {
+  playBarMusicInfor: Music;
+  setplayBarMusicInfor: Function;
+}) {
   const [searchInput, setSearchInput] = useState("");
   const [sortType, setSortType] = useState<SortType>(SortType.LIKES);
   const [genreType, setGenreType] = useState<string>("");
@@ -500,17 +558,6 @@ function MusicPlayer() {
   );
 
   const [playBarActivate, setplayBarActivate] = useState<boolean>(false);
-  const [playBarMusicInfor, setplayBarMusicInfor] = useState<Music>({
-    title: "",
-    artist: "",
-    album: "",
-    time: "",
-    likes: 0,
-    views: 0,
-    library: "",
-    genre: "",
-    isLike: false,
-  });
 
   return (
     <div id="musicPlayer">
@@ -552,10 +599,30 @@ function MusicPlayer() {
 }
 
 function App() {
+  const [playBarMusicInfor, setplayBarMusicInfor] = useState<Music>({
+    title: "",
+    artist: "",
+    album: "",
+    albumCover:
+      "http://drive.google.com/uc?export=view&id=1lHhCXG7SWw3aA7aJsInieWGaR9dFPO5W",
+    time: 0,
+    likes: 0,
+    views: 0,
+    library: "",
+    genre: "",
+    isLike: false,
+  });
+
   return (
     <>
-      <div id="background">
-        <MusicPlayer />
+      <div
+        style={{ backgroundImage: `url(${playBarMusicInfor.albumCover})` }}
+        id="background"
+      >
+        <MusicPlayer
+          playBarMusicInfor={playBarMusicInfor}
+          setplayBarMusicInfor={setplayBarMusicInfor}
+        />
       </div>
     </>
   );

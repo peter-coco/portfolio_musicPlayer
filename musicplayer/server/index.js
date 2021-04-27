@@ -33,7 +33,7 @@ app.post("/addLikes/:title", (req, res) => {
 
   console.log(req.params);
   res.header({
-    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Origin": "*",
   });
 
   // data.res = data.res.map((e) =>
@@ -72,7 +72,7 @@ app.post("/addLib/:title", (req, res) => {
   console.log(req.params);
   console.log(lib);
   res.header({
-    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Origin": "*",
   });
 
   data.res = data.res.map((e) =>
@@ -86,7 +86,7 @@ app.post("/addLib/:title", (req, res) => {
 
 app.get("/", (req, res) => {
   res.header({
-    "Access-Control-Allow-Origin": "http://localhost:3000",
+    "Access-Control-Allow-Origin": "*",
   });
   res.json(data);
 });
@@ -101,7 +101,9 @@ let data = {
       title: "yellow",
       artist: "coldplay",
       album: "Parachutes",
-      time: "4:27",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1UQO8qJEhyuag7CAIKzXpULTOwLLG43_u",
+      time: "60",
       likes: 128,
       views: 5,
       library: "",
@@ -112,7 +114,9 @@ let data = {
       title: "Watermelon Sugar",
       artist: "Harry Styles",
       album: "Fine Line",
-      time: "2:54",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1VcuD3-T-FhckIzCCk1rOVNR5gpigxInI",
+      time: "60",
       likes: 62,
       views: 128,
       library: "",
@@ -123,7 +127,9 @@ let data = {
       title: "Best Part",
       artist: "대니얼 시저",
       album: "Freudian",
-      time: "3:30",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1sMGNNKPTNPb0NLXeV4cNx0c3mcRHHHr0",
+      time: "60",
       likes: 13,
       views: 52,
       library: "",
@@ -134,7 +140,9 @@ let data = {
       title: "Bad",
       artist: "크리스토퍼",
       album: "Under the Surface",
-      time: "3:12",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1xHaVrv0EcJjjz55XMPHMUPhbEJEAz2TB",
+      time: "60",
       likes: 78,
       views: 111,
       library: "",
