@@ -242,7 +242,9 @@ function Music({
         <div className="music-title">{music.title}</div>
         <div className="music-artist">{music.artist}</div>
         <div className="music-album">{music.album}</div>
-        <div className="music-playTime">{music.time}</div>
+        <div className="music-playTime">
+          {parseInt(String(music.time / 60))}:{music.time % 60}
+        </div>
         <div className="music-likes">{music.likes}</div>
         <div className="music-views">{music.views}</div>
         <i
@@ -428,7 +430,10 @@ function Footer({
           <div className="music-title">{playBarMusicInfor.title}</div>
           <div className="music-artist">{playBarMusicInfor.artist}</div>
           <div className="music-album">{playBarMusicInfor.album}</div>
-          <div className="music-playTime">{playBarMusicInfor.time}</div>
+          <div className="music-playTime">
+            {parseInt(String(playBarMusicInfor.time / 60))}:
+            {playBarMusicInfor.time % 60}
+          </div>
           <div className="music-likes">{playBarMusicInfor.likes}</div>
           <div className="music-views">{playBarMusicInfor.views}</div>
         </div>
@@ -614,17 +619,16 @@ function App() {
   });
 
   return (
-    <>
+    <div id="background-wrap">
       <div
         style={{ backgroundImage: `url(${playBarMusicInfor.albumCover})` }}
         id="background"
-      >
-        <MusicPlayer
-          playBarMusicInfor={playBarMusicInfor}
-          setplayBarMusicInfor={setplayBarMusicInfor}
-        />
-      </div>
-    </>
+      ></div>
+      <MusicPlayer
+        playBarMusicInfor={playBarMusicInfor}
+        setplayBarMusicInfor={setplayBarMusicInfor}
+      />
+    </div>
   );
 }
 
