@@ -1,5 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  CSSProperties,
+  useCallback,
+} from "react";
 import "./App.css";
+import OnOutsiceClick from "react-outclick";
 
 import { isThisTypeNode } from "typescript";
 import { NONAME } from "node:dns";
@@ -245,6 +252,31 @@ function Music({
       .then((e) => setMusicList(e.res));
   }, [checkClickThumbsUp]);
 
+  const handleClick = useCallback(() => {
+    if (!music.isLike) {
+      fetch(`http://localhost:8080/addLikes/${music.title}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((e) => e.json())
+        .then((e) => console.log(e.res));
+      setCheckClickThumbsUp((pre: boolean) => !pre);
+    } else {
+      fetch(`http://localhost:8080/subLikes/${music.title}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((e) => e.json())
+        .then((e) => console.log(e.res));
+      setCheckClickThumbsUp(!checkClickThumbsUp);
+    }
+    // setplayBarMusicInfor(music);
+  }, [music, setCheckClickThumbsUp, checkClickThumbsUp]);
+
   return (
     <div className="music">
       <div className="music-info">
@@ -253,55 +285,35 @@ function Music({
         <div className="music-artist">{music.artist}</div>
         <div className="music-album">{music.album}</div>
         <div className="music-playTime">
-          {parseInt(String(music.time / 60))}:{music.time % 60}
+          {Math.floor(music.time / 60)}:{music.time % 60}
         </div>
         <div className="music-likes">{music.likes}</div>
         <div className="music-views">{music.views}</div>
         <i
           style={music.isLike ? { color: "white" } : { color: "black" }}
           className="fas fa-thumbs-up"
-          onClick={() => {
-            if (music.isLike === false) {
-              fetch(`http://localhost:8080/addLikes/${music.title}`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-                .then((e) => e.json())
-                .then((e) => console.log(e.res));
-              setCheckClickThumbsUp(!checkClickThumbsUp);
-            } else {
-              fetch(`http://localhost:8080/subLikes/${music.title}`, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-                .then((e) => e.json())
-                .then((e) => console.log(e.res));
-              setCheckClickThumbsUp(!checkClickThumbsUp);
-            }
-            // setplayBarMusicInfor(music);
-          }}
+          onClick={handleClick}
         ></i>
         <i
           className="fas fa-ellipsis-v list-ellipsis"
           onClick={() => {
-            // if (subOperationActivate === false) {
-            //   setSubOperationActivate(!subOperationActivate);
-            // }
             setOperationActivate((pre) => !pre);
           }}
         >
-          <MusicSubOperation
-            music={music}
-            subOperationActivate={subOperationActivate}
-            setplayBarActivate={setplayBarActivate}
-            setplayBarMusicInfor={setplayBarMusicInfor}
-            setMusicList={setMusicList}
-            operationActivate={operationActivate}
-          />
+          <OnOutsiceClick
+            onOutsideClick={() => {
+              if (operationActivate) setOperationActivate(false);
+            }}
+          >
+            <MusicSubOperation
+              music={music}
+              subOperationActivate={subOperationActivate}
+              setplayBarActivate={setplayBarActivate}
+              setplayBarMusicInfor={setplayBarMusicInfor}
+              setMusicList={setMusicList}
+              operationActivate={operationActivate}
+            />
+          </OnOutsiceClick>
         </i>
       </div>
     </div>
@@ -337,21 +349,16 @@ function MusicSubOperation({
       // onClick={(e) => {
       //   e.stopPropagation();
       // }}
-      style={
-        subOperationActivate === true && operationActivate === true
-          ? {
-              opacity: 1,
-              visibility: "visible",
-              height: "100px",
-              transition: "all 300ms",
-            }
-          : {
-              opacity: 0,
-              visibility: "hidden",
-              height: "0px",
-              transition: "all 300ms",
-            }
-      }
+      style={{
+        // opacity: operationActivate ? 1 : 0,
+        visibility: operationActivate ? "visible" : "hidden",
+        clipPath: operationActivate
+          ? "polygon(0 0, 100% 0, 100% 100%, 0 100%)"
+          : "polygon(0 0, 100% 0, 0 0, 0 0)",
+        height: "100px",
+        overflow: "hidden",
+        transition: "all 300ms",
+      }}
       className="music-sub-operation"
     >
       <div
@@ -418,29 +425,27 @@ function Footer({
   checkClickThumbsUp: boolean;
   setplayBarMusicInfor: Function;
 }) {
-  const [playNpauseToggle, setPlayNpauseToggle] = useState<boolean>(false);
-  const [musicTime, setMusicTime] = useState<number>(playBarMusicInfor.time);
-  const [pauseMusic, setPauseMusic] = useState<boolean>(false);
-  let totalTime = playBarMusicInfor.time;
-  // let totalTime = 10;
-  let timer: any;
-  // useEffect(() => {
-  //   if (playBarActivate) {
-  //     timer = setInterval(() => {
-  //       if (totalTime === 1) {
-  //         clearInterval(timer);
-  //       }
-  //       totalTime -= 1;
-  //       setMusicTime(totalTime);
-  //       console.log(totalTime, musicTime);
-  //     }, 1000);
-  //   }
+  const [playNpauseToggle, setPlayNpauseToggle] = useState(false);
+  const [musicTime, setMusicTime] = useState(0);
+  const [pauseMusic, setPauseMusic] = useState(false);
+  const [totalTime, setTotalTime] = useState(0);
 
-  //   // if (pauseMusic === true) {
-  //   //   clearInterval(timer);
-  //   //   console.log(pauseMusic);
-  //   // }
-  // }, [playBarActivate, pauseMusic]);
+  useEffect(() => {
+    if (playBarMusicInfor) {
+      setTotalTime(playBarMusicInfor.time);
+      setMusicTime(0);
+    }
+  }, [playBarMusicInfor]);
+
+  useEffect(() => {
+    if (playBarActivate && playBarMusicInfor && !pauseMusic) {
+      const timer = setInterval(() => {
+        setMusicTime((pre) => (pre < playBarMusicInfor.time ? pre + 1 : pre));
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [playBarActivate, pauseMusic, playBarMusicInfor]);
 
   // useEffect(() => {
   //   fetch("http://localhost:8080/")
@@ -452,26 +457,47 @@ function Footer({
     fetch("http://localhost:8080/")
       .then((e) => e.json())
       .then((e) => {
-        for (let i = 0; i < 4; i++) {
+        // //
+        for (let i = 0; i < e.res.length; i++) {
           if (e.res[i].title === playBarMusicInfor.title) {
             setplayBarMusicInfor(e.res[i]);
           }
         }
+        // //
+        // for (const el of e.res) {
+        //   if (el.title === playBarMusicInfor.title) {
+        //     setplayBarMusicInfor(el);
+        //   }
+        // }
+        // const list: Music[] = e.res;
+        // console.log(list);
+        // const rr = list.filter((el) => el.title === playBarMusicInfor.title);
+        // //
+        // if (rr.length) setplayBarMusicInfor(rr[0]);
       });
   }, [checkClickThumbsUp]);
 
+  // const cs: CSSProperties = {
+  //   display: playBarActivate ? "flex" : "none",
+  // };
+
+  // // let cs : CSSProperties;
+  // // if (playBarActivate)
+  // //   cs = { display: "flex" };
+  // // else
+  // //   cs = { display: "none" }
+
   return (
     <footer
-      style={playBarActivate ? { display: "flex" } : { display: "none" }}
+      style={{
+        display: playBarActivate ? "flex" : "none",
+      }}
       id="player-footer"
     >
       <div id="song-progress-bar">
         <div
           style={{
-            width: `${
-              ((playBarMusicInfor.time - musicTime) * 100) /
-              playBarMusicInfor.time
-            }%`,
+            width: `${(musicTime / totalTime) * 100}%`,
           }}
           id="progress"
         ></div>
@@ -497,6 +523,7 @@ function Footer({
             }
             className="fas fa-play"
             onClick={() => {
+              setPauseMusic((pre) => !pre);
               setPlayNpauseToggle(!playNpauseToggle);
             }}
           ></i>
@@ -622,9 +649,9 @@ function MusicPlayer({
     <div
       id="musicPlayer"
       onClick={(e) => {
-        if (subOperationActivate === true)
-          setSubOperationActivate((pre) => !pre);
-        console.log(e.target, subOperationActivate);
+        // if (subOperationActivate === true)
+        //   setSubOperationActivate((pre) => !pre);
+        // console.log(e.target, subOperationActivate);
       }}
     >
       <PlayerNav

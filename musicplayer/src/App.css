@@ -135,6 +135,12 @@
   overflow-y: scroll;
 }
 
+/* scroll bar customize */
+#player-main::-webkit-scrollbar {
+  width: 10px;
+  background-color: red;
+}
+
 .music {
   display: flex;
   width: 100%;
