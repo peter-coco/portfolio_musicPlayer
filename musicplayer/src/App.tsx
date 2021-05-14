@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./App.css";
-// import AlbumImg from "./img/albums/coldplay_Parachutes.jpg";
 
 import { isThisTypeNode } from "typescript";
 import { NONAME } from "node:dns";
@@ -154,6 +153,10 @@ function MusicList({
   setplayBarActivate,
   setplayBarMusicInfor,
   setMusicList,
+  checkClickThumbsUp,
+  setCheckClickThumbsUp,
+  subOperationActivate,
+  setSubOperationActivate,
 }: {
   searchInput: string;
   setGenreType: string;
@@ -163,6 +166,10 @@ function MusicList({
   setplayBarActivate: Function;
   setplayBarMusicInfor: Function;
   setMusicList: Function;
+  checkClickThumbsUp: boolean;
+  setCheckClickThumbsUp: Function;
+  subOperationActivate: boolean;
+  setSubOperationActivate: Function;
 }) {
   // const [musicList, setMusicList] = useState<Music[]>([]);
 
@@ -173,7 +180,7 @@ function MusicList({
   }, []);
 
   return (
-    <main id="player-main">
+    <main id="player-main" onClick={() => {}}>
       {musicList
         .filter((el) => el.title.includes(searchInput))
         .filter((el) => el.genre.includes(setGenreType))
@@ -201,6 +208,10 @@ function MusicList({
             setplayBarActivate={setplayBarActivate}
             setplayBarMusicInfor={setplayBarMusicInfor}
             setMusicList={setMusicList}
+            checkClickThumbsUp={checkClickThumbsUp}
+            setCheckClickThumbsUp={setCheckClickThumbsUp}
+            subOperationActivate={subOperationActivate}
+            setSubOperationActivate={setSubOperationActivate}
           />
         ))}
     </main>
@@ -212,17 +223,21 @@ function Music({
   setplayBarActivate,
   setplayBarMusicInfor,
   setMusicList,
+  checkClickThumbsUp,
+  setCheckClickThumbsUp,
+  subOperationActivate,
+  setSubOperationActivate,
 }: {
   music: Music;
   setplayBarActivate: Function;
   setplayBarMusicInfor: Function;
   setMusicList: Function;
+  checkClickThumbsUp: boolean;
+  setCheckClickThumbsUp: Function;
+  subOperationActivate: boolean;
+  setSubOperationActivate: Function;
 }) {
-  const [subOperationActivate, setSubOperationActivate] = useState<boolean>(
-    false
-  );
-  const [operationToggle, setoperationToggle] = useState<boolean>(false);
-  const [checkClickThumbsUp, setCheckClickThumbsUp] = useState<boolean>(false);
+  const [operationActivate, setOperationActivate] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("http://localhost:8080/")
@@ -233,11 +248,6 @@ function Music({
   return (
     <div className="music">
       <div className="music-info">
-        {/* <div className="music-count">1</div> */}
-        {/* <div
-          style={{ background: `url(${music.albumCover}) center/cover` }}
-          className="music-cover"
-        ></div> */}
         <img src={music.albumCover} className="music-cover" />
         <div className="music-title">{music.title}</div>
         <div className="music-artist">{music.artist}</div>
@@ -278,13 +288,10 @@ function Music({
         <i
           className="fas fa-ellipsis-v list-ellipsis"
           onClick={() => {
-            setSubOperationActivate(!operationToggle);
-            // pre(가제)는 직전값을 의미(보장)
-            setoperationToggle((pre) => !pre);
-
-            // false
-            // true
-            // true
+            // if (subOperationActivate === false) {
+            //   setSubOperationActivate(!subOperationActivate);
+            // }
+            setOperationActivate((pre) => !pre);
           }}
         >
           <MusicSubOperation
@@ -293,12 +300,10 @@ function Music({
             setplayBarActivate={setplayBarActivate}
             setplayBarMusicInfor={setplayBarMusicInfor}
             setMusicList={setMusicList}
+            operationActivate={operationActivate}
           />
         </i>
       </div>
-      {/* <div className="music-thumb"> */}
-      {/* <i className="fas fa-thumbs-down"></i> */}
-      {/* </div> */}
     </div>
   );
 }
@@ -309,12 +314,14 @@ function MusicSubOperation({
   setplayBarActivate,
   setplayBarMusicInfor,
   setMusicList,
+  operationActivate,
 }: {
   music: Music;
   subOperationActivate: boolean;
   setplayBarActivate: Function;
   setplayBarMusicInfor: Function;
   setMusicList: Function;
+  operationActivate: boolean;
 }) {
   const [playBarToggle, setPlayBarToggle] = useState<boolean>(false);
   const [checkClickLibrary, setCheckClickLibrary] = useState<boolean>(false);
@@ -330,7 +337,21 @@ function MusicSubOperation({
       // onClick={(e) => {
       //   e.stopPropagation();
       // }}
-      style={subOperationActivate ? { display: "flex" } : { display: "none" }}
+      style={
+        subOperationActivate === true && operationActivate === true
+          ? {
+              opacity: 1,
+              visibility: "visible",
+              height: "100px",
+              transition: "all 300ms",
+            }
+          : {
+              opacity: 0,
+              visibility: "hidden",
+              height: "0px",
+              transition: "all 300ms",
+            }
+      }
       className="music-sub-operation"
     >
       <div
@@ -389,24 +410,55 @@ function MusicSubOperation({
 function Footer({
   playBarActivate,
   playBarMusicInfor,
+  checkClickThumbsUp,
+  setplayBarMusicInfor,
 }: {
   playBarActivate: boolean;
   playBarMusicInfor: Music;
+  checkClickThumbsUp: boolean;
+  setplayBarMusicInfor: Function;
 }) {
   const [playNpauseToggle, setPlayNpauseToggle] = useState<boolean>(false);
   const [musicTime, setMusicTime] = useState<number>(playBarMusicInfor.time);
+  const [pauseMusic, setPauseMusic] = useState<boolean>(false);
   let totalTime = playBarMusicInfor.time;
-  if (playBarActivate) {
-    let timer = setInterval(() => {
-      // console.log(totalTime);
-      if (totalTime == 0) {
-        clearInterval(timer);
-      }
-      --totalTime;
-      setMusicTime(totalTime);
-      // console.log(musicTime);
-    }, 1000);
-  }
+  // let totalTime = 10;
+  let timer: any;
+  // useEffect(() => {
+  //   if (playBarActivate) {
+  //     timer = setInterval(() => {
+  //       if (totalTime === 1) {
+  //         clearInterval(timer);
+  //       }
+  //       totalTime -= 1;
+  //       setMusicTime(totalTime);
+  //       console.log(totalTime, musicTime);
+  //     }, 1000);
+  //   }
+
+  //   // if (pauseMusic === true) {
+  //   //   clearInterval(timer);
+  //   //   console.log(pauseMusic);
+  //   // }
+  // }, [playBarActivate, pauseMusic]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8080/")
+  //     .then((e) => e.json())
+  //     .then((e) => setplayBarMusicInfor(e.res[0]));
+  // }, [checkClickThumbsUp]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/")
+      .then((e) => e.json())
+      .then((e) => {
+        for (let i = 0; i < 4; i++) {
+          if (e.res[i].title === playBarMusicInfor.title) {
+            setplayBarMusicInfor(e.res[i]);
+          }
+        }
+      });
+  }, [checkClickThumbsUp]);
 
   return (
     <footer
@@ -454,6 +506,7 @@ function Footer({
             }
             className="fas fa-pause"
             onClick={() => {
+              setPauseMusic((pre) => !pre);
               setPlayNpauseToggle(!playNpauseToggle);
             }}
           ></i>
@@ -558,14 +611,22 @@ function MusicPlayer({
   const [libraryType, setLibraryType] = useState<string>("");
   const [musicList, setMusicList] = useState<Music[]>([]);
 
-  const [rankSideBarActivate, setRankSideBarActivate] = useState<boolean>(
-    false
-  );
+  const [rankSideBarActivate, setRankSideBarActivate] =
+    useState<boolean>(false);
 
   const [playBarActivate, setplayBarActivate] = useState<boolean>(false);
-
+  const [checkClickThumbsUp, setCheckClickThumbsUp] = useState<boolean>(false);
+  const [subOperationActivate, setSubOperationActivate] =
+    useState<boolean>(false);
   return (
-    <div id="musicPlayer">
+    <div
+      id="musicPlayer"
+      onClick={(e) => {
+        if (subOperationActivate === true)
+          setSubOperationActivate((pre) => !pre);
+        console.log(e.target, subOperationActivate);
+      }}
+    >
       <PlayerNav
         setSearchInput={setSearchInput}
         setSortType={setSortType}
@@ -593,11 +654,17 @@ function MusicPlayer({
           setplayBarActivate={setplayBarActivate}
           setplayBarMusicInfor={setplayBarMusicInfor}
           setMusicList={setMusicList}
+          checkClickThumbsUp={checkClickThumbsUp}
+          setCheckClickThumbsUp={setCheckClickThumbsUp}
+          subOperationActivate={subOperationActivate}
+          setSubOperationActivate={setSubOperationActivate}
         />
       </div>
       <Footer
         playBarActivate={playBarActivate}
         playBarMusicInfor={playBarMusicInfor}
+        setplayBarMusicInfor={setplayBarMusicInfor}
+        checkClickThumbsUp={checkClickThumbsUp}
       />
     </div>
   );
