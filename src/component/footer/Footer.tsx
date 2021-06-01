@@ -36,7 +36,7 @@ export function Footer({
   }, [playBarActivate, pauseMusic, playBarMusicInfor]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/")
+    fetch("http://3.128.153.230:8080/")
       .then((e) => e.json())
       .then((e) => {
         // //
