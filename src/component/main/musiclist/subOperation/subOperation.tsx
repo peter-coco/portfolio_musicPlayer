@@ -21,7 +21,7 @@ export function MusicSubOperation({
   const [checkClickLibrary, setCheckClickLibrary] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("http://3.128.153.230:8080/")
+    fetch("//3.128.153.230:8080/")
       .then((e) => e.json())
       .then((e) => setMusicList(e.res));
   }, [checkClickLibrary]);
@@ -41,7 +41,7 @@ export function MusicSubOperation({
   ]);
 
   const addLibraryFunc = useCallback(() => {
-    fetch(`http://3.128.153.230:8080/addLib/${music.title}`, {
+    fetch(`//3.128.153.230:8080/addLib/${music.title}`, {
       method: "POST",
       // mode: "no-cors",
       headers: {
@@ -57,7 +57,7 @@ export function MusicSubOperation({
   }, [setCheckClickLibrary, checkClickLibrary, music]);
 
   const deleteLibraryFunc = useCallback(() => {
-    fetch(`http://3.128.153.230:8080/delLib/${music.title}`, {
+    fetch(`//3.128.153.230:8080/delLib/${music.title}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

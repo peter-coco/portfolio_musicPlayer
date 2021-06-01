@@ -27,7 +27,7 @@ export function Main({
   setCheckClickThumbsUp: Function;
 }) {
   useEffect(() => {
-    fetch("http://3.128.153.230:8080/")
+    fetch("//3.128.153.230:8080/")
       .then((e) => e.json())
       .then((e) => setMusicList(e.res));
   }, []);
