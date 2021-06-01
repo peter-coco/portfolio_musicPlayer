@@ -41,9 +41,6 @@ export function MusicInfor({
     } else {
       fetch(`http://localhost:8080/subLikes/${music.title}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
       })
         .then((e) => e.json())
         .then((e) => console.log(e.res));
@@ -55,9 +52,7 @@ export function MusicInfor({
   const subMenuClickToggleFunc = useCallback(
     (area: string) => {
       if (area === "inSide") setOperationActivate((pre) => !pre);
-      else {
-        if (operationActivate) setOperationActivate(false);
-      }
+      else if (operationActivate) setOperationActivate(false);
     },
     [setOperationActivate, operationActivate]
   );

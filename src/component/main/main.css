@@ -15,5 +15,5 @@
 /* scroll bar customize */
 #player-main::-webkit-scrollbar {
   width: 10px;
-  background-color: red;
+  /* background-color: red; */
 }

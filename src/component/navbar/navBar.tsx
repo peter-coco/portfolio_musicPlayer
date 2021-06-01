@@ -95,6 +95,10 @@ export function PlayerNav({
     libraryBarToggle,
   ]);
 
+  // const a = (b)=>{
+  //   switch(b){}
+  // }
+
   console.log(rankSideBarToggle);
   return (
     <nav id="player-navBar">
@@ -114,7 +118,7 @@ export function PlayerNav({
           style={libraryBarToggle ? { color: "white" } : { color: "black" }}
           className="far fa-list-alt"
           onClick={selectLibraryMenuFunc}
-        ></i>
+        />
       </div>
       <SearchBar setSearchInput={setSearchInput} />
     </nav>

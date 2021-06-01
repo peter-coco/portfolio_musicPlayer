@@ -2,11 +2,12 @@ import { useState, useCallback } from "react";
 import "./SearchBar.css";
 
 export function SearchBar({ setSearchInput }: { setSearchInput: Function }) {
-  const [inputText, setInputText] = useState<string>("");
+  const [inputText, setInputText] = useState("");
 
-  const clickSearchFunc = useCallback(() => {
-    setSearchInput(inputText);
-  }, [setSearchInput, inputText]);
+  const clickSearchFunc = useCallback(
+    () => setSearchInput(inputText),
+    [setSearchInput, inputText]
+  );
 
   return (
     <div id="serach-bar">

@@ -54,7 +54,7 @@ export function Main({
               return a.album.localeCompare(b.album);
           }
         })
-        .map((e, idx) => (
+        .map((e) => (
           <MusicInfor
             key={e.title + e.album + e.artist}
             music={e}

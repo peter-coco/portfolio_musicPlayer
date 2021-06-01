@@ -29,41 +29,31 @@ export function RankSideBar({
     >
       <div
         className="sidebar-menu"
-        onClick={() => {
-          selectSidebarMenu("", "", SortType.VIEWS);
-        }}
+        onClick={() => selectSidebarMenu("", "", SortType.VIEWS)}
       >
         전체
       </div>
       <div
         className="sidebar-pop"
-        onClick={() => {
-          selectSidebarMenu("", "POP", SortType.VIEWS);
-        }}
+        onClick={() => selectSidebarMenu("", "POP", SortType.VIEWS)}
       >
         POP
       </div>
       <div
         className="sidebar-kpop"
-        onClick={() => {
-          selectSidebarMenu("", "KPOP", SortType.VIEWS);
-        }}
+        onClick={() => selectSidebarMenu("", "KPOP", SortType.VIEWS)}
       >
         K-POP
       </div>
       <div
         className="sidebar-rock"
-        onClick={() => {
-          selectSidebarMenu("", "ROCK", SortType.VIEWS);
-        }}
+        onClick={() => selectSidebarMenu("", "ROCK", SortType.VIEWS)}
       >
         ROCK
       </div>
       <div
         className="sidebar-likes"
-        onClick={() => {
-          selectSidebarMenu("", "", SortType.LIKES);
-        }}
+        onClick={() => selectSidebarMenu("", "", SortType.LIKES)}
       >
         좋아요순
       </div>
