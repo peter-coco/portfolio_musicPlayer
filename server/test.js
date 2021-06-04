@@ -1,9 +1,9 @@
-const http = require("http");
+const https = require("https");
 
 const hostname = "musicdata.link"; // 서버 컴퓨터의 ip
 const port = 8080; //
 
-const server = http.createServer((req, res) => {
+const server = https.createServer((req, res) => {
   // createServer 명령을 통해 서버 한대를 만든다.
   res.statusCode = 200; // 통신 성공
   res.setHeader("Content-Type", "text/plain");
