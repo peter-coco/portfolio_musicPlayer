@@ -2,6 +2,8 @@ const e = require("express");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const PORT = process.env.PORT || 8080;
+console.log(`port is : ${PORT}`);
 
 app.use(express.static("public"));
 app.use(express.json());
