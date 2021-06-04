@@ -1,6 +1,6 @@
 const https = require("https");
 
-const hostname = "musicdata.link"; // 서버 컴퓨터의 ip
+const hostname = "54.180.99.34"; // 서버 컴퓨터의 ip
 const port = 8080; //
 
 const server = https.createServer((req, res) => {
