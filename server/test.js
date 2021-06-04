@@ -10,4 +10,6 @@ app1.get("/", function (req, res) {
 
 app.use(vhost("https://musicdata.link/", app1));
 
-app.listen(3000);
+app.listen(8080, () => {
+  console.log("start");
+});
