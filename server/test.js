@@ -1,10 +1,13 @@
 const express = require("express");
-const site1 = express.createServer();
-const site_vhosts = [];
+const vhost = require("vhost");
 
-site_vhosts.push(express.vhost("https://musicdata.link/", site1));
+const app1 = express();
+const app = express();
 
-const vhost = express.createServer().apply(this, site_vhosts);
+app1.get("/", function (req, res) {
+  res.send("app1");
+});
 
-site1.listen(8080);
-vhost.listen(80);
+app.use(vhost("https://musicdata.link/", app1));
+
+app.listen(3000);
