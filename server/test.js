@@ -1,15 +1,41 @@
 const express = require("express");
-const vhost = require("vhost");
+const fs = require("fs");
+const path = require("path");
+const HTTPS = require("https");
 
-const app1 = express();
 const app = express();
 
-app1.get("/", function (req, res) {
-  res.send("app1");
-});
+try {
+  const option = {
+    ca: fs.readFileSync("/etc/letsencrypt/live/musicdata.link/fullchain.pem"),
+    key: fs
+      .readFileSync(
+        path.resolve(
+          process.cwd(),
+          "/etc/letsencrypt/live/musicdata.link/privkey.pem"
+        ),
+        "utf8"
+      )
+      .toString(),
+    cert: fs
+      .readFileSync(
+        path.resolve(
+          process.cwd(),
+          "/etc/letsencrypt/live/musicdata.link/cert.pem"
+        ),
+        "utf8"
+      )
+      .toString(),
+  };
 
-app.use(vhost("https://musicdata.link:", app1));
-
-app.listen(8080, () => {
-  console.log("start");
-});
+  HTTPS.createServer(option, app).listen(sslport, () => {
+    colorConsole.success(
+      `[HTTPS] Soda Server is started on port ${colors.cyan(sslport)}`
+    );
+  });
+} catch (error) {
+  colorConsole.error(
+    "[HTTPS] HTTPS 오류가 발생하였습니다. HTTPS 서버는 실행되지 않습니다."
+  );
+  colorConsole.warn(error);
+}
