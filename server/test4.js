@@ -1,5 +1,6 @@
 const app = require("express")();
 const https = require("https");
+const http = require("http");
 const fs = require("fs");
 const PORT = process.env.PORT || 443; // HTTPS 는 443 포트를 사용합니다
 
