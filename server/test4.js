@@ -28,3 +28,10 @@ option
   : http.createServer(app).listen(PORT, () => {
       console.log(`Server is running at port ${PORT}`);
     });
+
+app.get("/", (req, res) => {
+  // res.header({
+  //   "Access-Control-Allow-Origin": "*",
+  // });
+  res.send("hello world");
+});
