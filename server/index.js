@@ -4,10 +4,10 @@ const app = express();
 const cors = require("cors");
 const http = require("http");
 
-import Bad from "./albums/Bad.png";
-import img1 from "./albums/Bad.png";
-import img1 from "./albums/Bad.png";
-import img1 from "./albums/Bad.png";
+import { Bad } from "./albums/Bad.png";
+// import img1 from "./albums/Bad.png";
+// import img1 from "./albums/Bad.png";
+// import img1 from "./albums/Bad.png";
 
 const option = http.createServer(app).listen(80, () => {
   // console.log(`Server is running at port ${80}`);
