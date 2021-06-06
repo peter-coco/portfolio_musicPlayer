@@ -49,6 +49,8 @@ function MusicPlayer({
   const [playBarActivate, setplayBarActivate] = useState(false);
   const [checkClickThumbsUp, setCheckClickThumbsUp] = useState(false);
 
+  const [checkClickLibrary, setCheckClickLibrary] = useState<boolean>(false);
+
   return (
     <div id="musicPlayer">
       <PlayerNav
@@ -77,6 +79,8 @@ function MusicPlayer({
           setMusicList={setMusicList}
           checkClickThumbsUp={checkClickThumbsUp}
           setCheckClickThumbsUp={setCheckClickThumbsUp}
+          checkClickLibrary={checkClickLibrary}
+          setCheckClickLibrary={setCheckClickLibrary}
         />
       </div>
       <Footer

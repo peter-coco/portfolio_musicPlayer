@@ -27,6 +27,7 @@
 
 #menu-bar > i {
   transition: all 300ms ease;
+  cursor: pointer;
 }
 
 #menu-bar > i:hover {

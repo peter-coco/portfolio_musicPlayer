@@ -11,6 +11,8 @@ export function MusicInfor({
   setMusicList,
   checkClickThumbsUp,
   setCheckClickThumbsUp,
+  checkClickLibrary,
+  setCheckClickLibrary,
 }: {
   music: Music;
   setplayBarActivate: Function;
@@ -18,6 +20,8 @@ export function MusicInfor({
   setMusicList: Function;
   checkClickThumbsUp: boolean;
   setCheckClickThumbsUp: Function;
+  checkClickLibrary: boolean;
+  setCheckClickLibrary: Function;
 }) {
   const [operationActivate, setOperationActivate] = useState<boolean>(false);
 
@@ -91,6 +95,8 @@ export function MusicInfor({
               setplayBarMusicInfor={setplayBarMusicInfor}
               setMusicList={setMusicList}
               operationActivate={operationActivate}
+              checkClickLibrary={checkClickLibrary}
+              setCheckClickLibrary={setCheckClickLibrary}
             />
           </OnOutsiceClick>
         </i>

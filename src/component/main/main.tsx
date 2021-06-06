@@ -14,6 +14,8 @@ export function Main({
   setMusicList,
   checkClickThumbsUp,
   setCheckClickThumbsUp,
+  checkClickLibrary,
+  setCheckClickLibrary,
 }: {
   searchInput: string;
   setGenreType: string;
@@ -25,12 +27,14 @@ export function Main({
   setMusicList: Function;
   checkClickThumbsUp: boolean;
   setCheckClickThumbsUp: Function;
+  checkClickLibrary: boolean;
+  setCheckClickLibrary: Function;
 }) {
   useEffect(() => {
     fetch("https://musicdata.link/")
       .then((e) => e.json())
       .then((e) => setMusicList(e.res));
-  }, []);
+  }, [checkClickLibrary]);
 
   return (
     <main id="player-main">
@@ -63,6 +67,8 @@ export function Main({
             setMusicList={setMusicList}
             checkClickThumbsUp={checkClickThumbsUp}
             setCheckClickThumbsUp={setCheckClickThumbsUp}
+            checkClickLibrary={checkClickLibrary}
+            setCheckClickLibrary={setCheckClickLibrary}
           />
         ))}
     </main>

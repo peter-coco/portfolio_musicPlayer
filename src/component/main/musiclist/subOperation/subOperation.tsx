@@ -9,6 +9,8 @@ export function MusicSubOperation({
   setplayBarMusicInfor,
   setMusicList,
   operationActivate,
+  checkClickLibrary,
+  setCheckClickLibrary,
 }: {
   music: Music;
 
@@ -16,9 +18,10 @@ export function MusicSubOperation({
   setplayBarMusicInfor: Function;
   setMusicList: Function;
   operationActivate: boolean;
+  checkClickLibrary: boolean;
+  setCheckClickLibrary: Function;
 }) {
   const [playBarToggle, setPlayBarToggle] = useState<boolean>(false);
-  const [checkClickLibrary, setCheckClickLibrary] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("https://musicdata.link/")
