@@ -29,7 +29,7 @@ const PORT = process.env.PORT || 443; // HTTPS 는 443 포트를 사용합니다
 //       console.log(`Server is running at port ${PORT}`);
 //     });
 
-const option = https.createServer(app).listen(443, () => {
+const option = http.createServer(app).listen(80, () => {
   // console.log(`Server is running at port ${80}`);
   console.log("server is running");
 });
