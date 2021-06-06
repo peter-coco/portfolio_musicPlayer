@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const http = require("http");
 
-const img1 = require("./albums/Bad.png");
+// const img1 = require("./albums/Bad.png");
 const { fstat } = require("node:fs");
 // import img1 from "./albums/Bad.png";
 // import img1 from "./albums/Bad.png";
