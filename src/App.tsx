@@ -110,8 +110,8 @@ function App() {
   return (
     <div id="background-wrap">
       <div
-        style={{ backgroundImage: `url(${playBarMusicInfor.albumCover})` }}
         id="background"
+        style={{ backgroundImage: `url(${playBarMusicInfor.albumCover})` }}
       ></div>
       <MusicPlayer
         playBarMusicInfor={playBarMusicInfor}
