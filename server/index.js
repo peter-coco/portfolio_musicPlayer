@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const http = require("http");
 
-import { Bad } from "./albums/Bad.png";
+const img1 = requrie("./albums/Bad.png");
 // import img1 from "./albums/Bad.png";
 // import img1 from "./albums/Bad.png";
 // import img1 from "./albums/Bad.png";
@@ -112,7 +112,7 @@ let data = {
       title: "yellow",
       artist: "coldplay",
       album: "Parachutes",
-      albumCover: { Bad },
+      albumCover: { img1 },
       time: 135,
       likes: 128,
       views: 5,
