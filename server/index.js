@@ -2,6 +2,12 @@ const e = require("express");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const http = require("http");
+
+const option = http.createServer(app).listen(80, () => {
+  // console.log(`Server is running at port ${80}`);
+  console.log("server is running");
+});
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -91,9 +97,9 @@ app.get("/", (req, res) => {
   res.json(data);
 });
 
-app.listen(8080, () => {
-  console.log("start!");
-});
+// app.listen(8080, () => {
+//   console.log("start!");
+// });
 
 let data = {
   res: [
