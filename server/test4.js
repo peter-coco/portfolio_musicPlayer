@@ -21,15 +21,19 @@ const option =
 
 // production 모드에서는 https 서버를
 // development 모드에서는 http 서버를 사용합니다
-option
-  ? https.createServer(option, app).listen(PORT, () => {
-      console.log(`Server is running at port ${PORT}`);
-    })
-  : http.createServer(app).listen(PORT, () => {
-      console.log(`Server is running at port ${PORT}`);
-    });
+// option
+//   ? https.createServer(option, app).listen(PORT, () => {
+//       console.log(`Server is running at port ${PORT}`);
+//     })
+//   : http.createServer(app).listen(PORT, () => {
+//       console.log(`Server is running at port ${PORT}`);
+//     });
 
-app.get("/", (req, res) => {
+option = http.createServer(app).listen(PORT, () => {
+  console.log(`Server is running at port ${PORT}`);
+});
+
+app.get("/address", (req, res) => {
   // res.header({
   //   "Access-Control-Allow-Origin": "*",
   // });
