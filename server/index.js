@@ -5,7 +5,7 @@ const cors = require("cors");
 const http = require("http");
 
 // const img1 = require("./albums/Bad.png");
-const { fstat } = require("node:fs");
+// const { fstat } = require("node:fs");
 // import img1 from "./albums/Bad.png";
 // import img1 from "./albums/Bad.png";
 // import img1 from "./albums/Bad.png";
@@ -103,12 +103,11 @@ app.get("/", (req, res) => {
   res.json(data);
 });
 
-app.get("/image", (req, res) => {
-  const filename = "./albums/Bad.png";
-  fstat.readFile(filename, () => {
-    res.send(filename);
-  });
-});
+// app.get("/image", (req, res) => {
+//   const options = {
+//     url: "./albums/",
+//   };
+// });
 
 // app.listen(8080, () => {
 //   console.log("start!");
