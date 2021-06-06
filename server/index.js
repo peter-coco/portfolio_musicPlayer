@@ -4,12 +4,6 @@ const app = express();
 const cors = require("cors");
 const http = require("http");
 
-// const img1 = require("./albums/Bad.png");
-// const { fstat } = require("node:fs");
-// import img1 from "./albums/Bad.png";
-// import img1 from "./albums/Bad.png";
-// import img1 from "./albums/Bad.png";
-
 const option = http.createServer(app).listen(80, () => {
   // console.log(`Server is running at port ${80}`);
   console.log("server is running");
@@ -103,12 +97,6 @@ app.get("/", (req, res) => {
   res.json(data);
 });
 
-// app.get("/image", (req, res) => {
-//   const options = {
-//     url: "./albums/",
-//   };
-// });
-
 // app.listen(8080, () => {
 //   console.log("start!");
 // });
@@ -119,7 +107,8 @@ let data = {
       title: "yellow",
       artist: "coldplay",
       album: "Parachutes",
-      albumCover: { img1 },
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1UQO8qJEhyuag7CAIKzXpULTOwLLG43_u",
       time: 135,
       likes: 128,
       views: 5,
@@ -131,7 +120,8 @@ let data = {
       title: "Watermelon Sugar",
       artist: "Harry Styles",
       album: "Fine Line",
-      albumCover: "./albums/coldplay_Parachutes.jpg",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1VcuD3-T-FhckIzCCk1rOVNR5gpigxInI",
       time: 134,
       likes: 62,
       views: 128,
@@ -143,7 +133,8 @@ let data = {
       title: "Best Part",
       artist: "대니얼 시저",
       album: "Freudian",
-      albumCover: "./albums/coldplay_Parachutes.jpg",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1sMGNNKPTNPb0NLXeV4cNx0c3mcRHHHr0",
       time: 137,
       likes: 13,
       views: 52,
@@ -155,7 +146,8 @@ let data = {
       title: "Bad",
       artist: "크리스토퍼",
       album: "Under the Surface",
-      albumCover: "./albums/coldplay_Parachutes.jpg",
+      albumCover:
+        "http://drive.google.com/uc?export=view&id=1xHaVrv0EcJjjz55XMPHMUPhbEJEAz2TB",
       time: 148,
       likes: 78,
       views: 111,
