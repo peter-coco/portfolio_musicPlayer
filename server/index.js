@@ -4,6 +4,11 @@ const app = express();
 const cors = require("cors");
 const http = require("http");
 
+import Bad from "./albums/Bad.png";
+import img1 from "./albums/Bad.png";
+import img1 from "./albums/Bad.png";
+import img1 from "./albums/Bad.png";
+
 const option = http.createServer(app).listen(80, () => {
   // console.log(`Server is running at port ${80}`);
   console.log("server is running");
@@ -107,7 +112,7 @@ let data = {
       title: "yellow",
       artist: "coldplay",
       album: "Parachutes",
-      albumCover: "./albums/coldplay_Parachutes.jpg",
+      albumCover: { Bad },
       time: 135,
       likes: 128,
       views: 5,
