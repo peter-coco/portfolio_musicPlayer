@@ -94,8 +94,7 @@ function App() {
     title: "",
     artist: "",
     album: "",
-    albumCover:
-      "http://drive.google.com/uc?export=view&id=1lHhCXG7SWw3aA7aJsInieWGaR9dFPO5W",
+    albumCover: "./img/background.jpg",
     time: 0,
     likes: 0,
     views: 0,

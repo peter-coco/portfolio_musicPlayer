@@ -107,8 +107,7 @@ let data = {
       title: "yellow",
       artist: "coldplay",
       album: "Parachutes",
-      albumCover:
-        "http://drive.google.com/uc?export=view&id=1UQO8qJEhyuag7CAIKzXpULTOwLLG43_u",
+      albumCover: "./albums/coldplay_Parachutes.jpg",
       time: 135,
       likes: 128,
       views: 5,
@@ -120,8 +119,7 @@ let data = {
       title: "Watermelon Sugar",
       artist: "Harry Styles",
       album: "Fine Line",
-      albumCover:
-        "http://drive.google.com/uc?export=view&id=1VcuD3-T-FhckIzCCk1rOVNR5gpigxInI",
+      albumCover: "./albums/coldplay_Parachutes.jpg",
       time: 134,
       likes: 62,
       views: 128,
@@ -133,8 +131,7 @@ let data = {
       title: "Best Part",
       artist: "대니얼 시저",
       album: "Freudian",
-      albumCover:
-        "http://drive.google.com/uc?export=view&id=1sMGNNKPTNPb0NLXeV4cNx0c3mcRHHHr0",
+      albumCover: "./albums/coldplay_Parachutes.jpg",
       time: 137,
       likes: 13,
       views: 52,
@@ -146,8 +143,7 @@ let data = {
       title: "Bad",
       artist: "크리스토퍼",
       album: "Under the Surface",
-      albumCover:
-        "http://drive.google.com/uc?export=view&id=1xHaVrv0EcJjjz55XMPHMUPhbEJEAz2TB",
+      albumCover: "./albums/coldplay_Parachutes.jpg",
       time: 148,
       likes: 78,
       views: 111,

@@ -22,14 +22,14 @@ export function MusicInfor({
   const [operationActivate, setOperationActivate] = useState<boolean>(false);
 
   useEffect(() => {
-    fetch("//3.128.153.230:8080/")
+    fetch("https://musicdata.link/")
       .then((e) => e.json())
       .then((e) => setMusicList(e.res));
   }, [checkClickThumbsUp]);
 
   const handleClick = useCallback(() => {
     if (!music.isLike) {
-      fetch(`//3.128.153.230:8080/addLikes/${music.title}`, {
+      fetch(`https://musicdata.link/addLikes/${music.title}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export function MusicInfor({
         .then((e) => console.log(e.res));
       setCheckClickThumbsUp((pre: boolean) => !pre);
     } else {
-      fetch(`//3.128.153.230:8080/subLikes/${music.title}`, {
+      fetch(`https://musicdata.link/subLikes/${music.title}`, {
         method: "DELETE",
       })
         .then((e) => e.json())
