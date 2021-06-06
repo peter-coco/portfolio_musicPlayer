@@ -20,7 +20,7 @@ var server = http.createServer(function (request, response) {
     response.end("Hong Gil Dong");
   } else if (resource == "/test") {
     // response.writeHead(200, { "Content-Type": "text/html" });
-    response.end(data);
+    response.json(data);
   } else {
     response.writeHead(404, { "Content-Type": "text/html" });
     response.end("404 Page Not Found");
