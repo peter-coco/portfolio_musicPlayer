@@ -11,7 +11,7 @@ var server = http.createServer(function (request, response) {
 
   // 3. 리소스에 해당하는 문자열이 아래와 같으면 해당 메시지를 클라이언트에 전달
   if (resource == "/address") {
-    response.end("hello world");
+    response.end("hello world222");
   } else if (resource == "/phone") {
     response.writeHead(200, { "Content-Type": "text/html" });
     response.end("02-3545-1237");
