@@ -94,7 +94,7 @@ function App() {
     title: "",
     artist: "",
     album: "",
-    albumCover: "https://musicdata.link/images/Bad.png",
+    albumCover: "https://musicdata.link/images/background.jpg",
     time: 0,
     likes: 0,
     views: 0,
