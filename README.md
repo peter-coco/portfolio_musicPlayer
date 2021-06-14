@@ -1,46 +1,31 @@
-# Getting Started with Create React App
+# musicPlayer project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduce
 
-## Available Scripts
+    react를 이용하여 간단한 music player 를 구현
+    tools : html, css, typescript, react, express, aws
 
-In the project directory, you can run:
+## components
 
-### `npm start`
+    ### navbar
+        - home( click event ) : 좋아요 순으로 내림차순 정렬하여 음악이 표시됨
+        - rank( click event ) : 조회수(들은 횟수) 순으로 내림차순 정렬하여 음악이 표시됨
+            - 각 장르( sidebar ) 클릭 시, 장르에 해당하는 음악들만 표시됨.
+        - library ( click event ) : 내가 즐겨찾기에 추가된 음악들만 표시됨.
+        - Search ( type & click event ) : 음악 이름을 알파벳 하나라도 일치하는것이 있다면 화면에 표시함
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    ### main
+        - 현재 navbar에서 활성화된 메뉴에 따라 선정된 음악들의 리스트와 각 정보가 표시됨
+        - 각 음악의 정보는 서버로부터 전달받은 data로 표시됨.
+            - https://musicdata.link
+        - thumbs up ( click event ) : 클릭한 음악의 좋아요 횟수가 증가
+        - ellipsis ( click event ) : 클릭시 각 음악의 세부 메뉴 버튼 활성화(on/off)
+            - 재생 : 선택된 음악 재생(play bar(footer) 활성화)
+            - 즐겨찾기에 담기 : 선택된 음악 library에 담기
+            - 즐겨찾기에 삭제 : 선택된 음악 library에서 삭제
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    ### footer
+        - main component로 부터 전달 받은 음악을 재생 및 정보 표시
+        - stop/play button에 따라 재생되는 음악 on/off
+            - 실제 음악이 재생되는것은 아니고 data에 있는 시간 정보를 가져와서 시간만큼 progress bar 구현
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
